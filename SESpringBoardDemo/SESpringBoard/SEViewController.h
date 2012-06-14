@@ -10,6 +10,6 @@
 
 @interface SEViewController : UIViewController
 
-@property (nonatomic, assign) UIImage *launcherImage;
+@property (nonatomic, unsafe_unretained) UIImage *launcherImage;
 
 @end
