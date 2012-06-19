@@ -1,20 +1,21 @@
 //
-//  SESpringBoard.m
-//  SESpringBoardDemo
+//  ILLBlingLord.m
+//  ILLBlingLord iOS springboard view
 //
-//  Created by Sarp Erdag on 11/5/11.
-//  Copyright (c) 2011 Sarp Erdag. All rights reserved.
+//  Created by bryn austin bellomy on 5/19/12.
+//  Based on code by Sarp Erdag written on 11/5/11.
+//  Copyright (c) 2012 bryn austin bellomy. All rights reserved.
 //
 
-#import "SESpringBoard.h"
-#import "SEViewController.h"
+#import "ILLBlingLord.h"
+#import "ILLBlingLordViewController.h"
 
-@interface SESpringBoard ()
+@interface ILLBlingLord ()
   @property (nonatomic, assign, readwrite) BOOL isInEditingMode;
   @property (nonatomic, strong, readwrite) NSString *navbarTitle;
 @end
 
-@implementation SESpringBoard
+@implementation ILLBlingLord
 
 @synthesize items = _items;
 @synthesize navbarTitle = _navbarTitle;
@@ -90,7 +91,7 @@
     int vergap = 0;
     int numberOfPages = (ceil((float)[menuItems count] / 12));
     int currentPage = 0;
-    for (SEMenuItem *item in self.items) {
+    for (ILLBlingLordMenuItem *item in self.items) {
       currentPage = counter / 12;
       item.tag = counter;
       item.delegate = self;
@@ -138,7 +139,7 @@
 }
 
 + (id) initWithNavbarTitle:(NSString *)navbarTitle items:(NSMutableArray *)menuItems launcherImage:(UIImage *)launcherImage {
-  SESpringBoard *tmpInstance = [[SESpringBoard alloc] initWithNavbarTitle:navbarTitle items:menuItems launcherImage:launcherImage];
+  ILLBlingLord *tmpInstance = [[ILLBlingLord alloc] initWithNavbarTitle:navbarTitle items:menuItems launcherImage:launcherImage];
 	return tmpInstance;
 }
 
@@ -159,10 +160,10 @@
 
 
 
-#pragma mark- SEMenuItem delegate methods
+#pragma mark- ILLBlingLord delegate methods
 #pragma mark-
 
-- (void) menuItemWasTapped: (SEMenuItem *)menuItem
+- (void) menuItemWasTapped: (ILLBlingLordMenuItem *)menuItem
                  buttonTag: (int)buttonTag
                   runBlock: (dispatch_block_t)tapHandlerBlock {
   
@@ -174,9 +175,9 @@
   }
 }
 
-- (void) menuItemWasTapped: (SEMenuItem *)menuItem
+- (void) menuItemWasTapped: (ILLBlingLordMenuItem *)menuItem
                  buttonTag: (int)buttonTag
-      launchViewController: (SEViewController *)viewController {
+      launchViewController: (ILLBlingLordViewController *)viewController {
   
   // if the springboard is in editing mode, do not launch any view controller
   if (self.isInEditingMode)
@@ -199,7 +200,7 @@
   
   [UIView animateWithDuration:.3f  animations:^{
     // fade out the buttons
-    for(SEMenuItem *item in self.items) {
+    for(ILLBlingLordMenuItem *item in self.items) {
       item.transform = [self offscreenQuadrantTransformForView:item];
       item.alpha = 0.f;
     }
@@ -224,7 +225,7 @@
 - (void)removeFromSpringboard:(int)index animate:(BOOL)animate {
   
   // Remove the selected menu item from the springboard, it will have a animation while disappearing
-  SEMenuItem *menuItem = [self.items objectAtIndex:index];
+  ILLBlingLordMenuItem *menuItem = [self.items objectAtIndex:index];
   [menuItem removeFromSuperview];
   
   int numberOfItemsInCurrentPage = [[self.itemCounts objectAtIndex:self.pageControl.currentPage] intValue];
@@ -241,7 +242,7 @@
   // and move each of the ones on the current page, one step back.
   // The first item of each row becomes the last item of the previous row.
   for (int i = index+1; i<[self.items count]; i++) {
-    SEMenuItem *item = [self.items objectAtIndex:i];
+    ILLBlingLordMenuItem *item = [self.items objectAtIndex:i];
     if (animate == YES) {
       [UIView animateWithDuration:0.2 animations:^{
         
@@ -279,7 +280,7 @@
   [UIView animateWithDuration:.3f animations:^{
     viewToRemove.alpha = 0.f;
     viewToRemove.transform = CGAffineTransformMakeScale(.1f, .1f);
-    for(SEMenuItem *item in self.items) {
+    for(ILLBlingLordMenuItem *item in self.items) {
       item.transform = CGAffineTransformIdentity;
       item.alpha = 1.f;
     }
@@ -309,7 +310,7 @@
 
 - (void) disableEditingMode {
   // loop thu all the items of the board and disable each's editing mode
-  for (SEMenuItem *item in self.items)
+  for (ILLBlingLordMenuItem *item in self.items)
     [item disableEditing];
   
   [self.doneEditingButton setHidden:YES];
@@ -320,7 +321,7 @@
   if (self.allowsEditing == NO)
     return;
   
-  for (SEMenuItem *item in self.items)
+  for (ILLBlingLordMenuItem *item in self.items)
     [item enableEditing];
   
   // show the done editing button

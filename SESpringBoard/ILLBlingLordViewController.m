@@ -1,17 +1,17 @@
 //
-//  SEViewController.m
-//  SESpringBoardDemo
+//  ILLBlingLordViewController.m
+//  ILLBlingLord iOS springboard view
 //
-//  Created by Sarp Erdag on 11/5/11.
-//  Copyright (c) 2011 Sarp Erdag. All rights reserved.
+//  Created by bryn austin bellomy on 5/19/12.
+//  Based on code by Sarp Erdag written on 11/5/11.
+//  Copyright (c) 2012 bryn austin bellomy. All rights reserved.
 //
 
-#import "SEViewController.h"
+#import "ILLBlingLordViewController.h"
 
-@implementation SEViewController
+@implementation ILLBlingLordViewController
 
 @synthesize launcherImage;
-
 
 - (void)quitView: (id) sender {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"closeView" object:self.navigationController.view];

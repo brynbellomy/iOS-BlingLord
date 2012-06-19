@@ -1,17 +1,18 @@
 //
-//  SEMenuItem.m
-//  SESpringBoardDemo
+//  ILLBlingLord.m
+//  ILLBlingLord iOS springboard view
 //
-//  Created by Sarp Erdag on 11/5/11.
-//  Copyright (c) 2011 Sarp Erdag. All rights reserved.
+//  Created by bryn austin bellomy on 5/19/12.
+//  Based on code by Sarp Erdag written on 11/5/11.
+//  Copyright (c) 2012 bryn austin bellomy. All rights reserved.
 //
 
-#import "SEMenuItem.h"
-#import "SESpringBoard.h"
+#import "ILLBlingLordMenuItem.h"
+#import "ILLBlingLord.h"
 #import <QuartzCore/QuartzCore.h>
 #include <stdlib.h>
 
-@interface SEMenuItem ()
+@interface ILLBlingLordMenuItem ()
   @property (nonatomic, weak, readwrite) UIButton *button;
   @property (nonatomic, weak, readwrite) UIButton *removeButton;
   @property (nonatomic, weak, readwrite) UIViewController *vcToLoad;
@@ -19,7 +20,7 @@
   @property (nonatomic, assign, readwrite) BOOL shouldRunCustomBlockOnTap;
 @end
 
-@implementation SEMenuItem
+@implementation ILLBlingLordMenuItem
 
 @synthesize isRemovable = _isRemovable;
 @synthesize isInEditingMode = _isInEditingMode;
@@ -155,7 +156,7 @@
            removable:(BOOL)removable
       viewController:(UIViewController *)viewController {
   
-	SEMenuItem *tmpInstance = [[SEMenuItem alloc] initWithTitle:title image:image viewController:viewController removable:removable];
+	ILLBlingLordMenuItem *tmpInstance = [[ILLBlingLordMenuItem alloc] initWithTitle:title image:image viewController:viewController removable:removable];
 	return tmpInstance;
 }
 
@@ -164,7 +165,7 @@
            removable:(BOOL)removable
      tapHandlerBlock:(dispatch_block_t)tapHandlerBlock {
   
-	SEMenuItem *tmpInstance = [[SEMenuItem alloc] initWithTitle:title image:image removable:removable tapHandlerBlock:tapHandlerBlock];
+	ILLBlingLordMenuItem *tmpInstance = [[ILLBlingLordMenuItem alloc] initWithTitle:title image:image removable:removable tapHandlerBlock:tapHandlerBlock];
 	return tmpInstance;
 }
 
@@ -196,7 +197,7 @@
 - (void) pressedLong:(id) sender {
     // inform the springboard that the menu items are now editable so that the springboard
     // will place a done button on the navigationbar
-    [(SESpringBoard *)self.delegate enableEditingMode];
+    [(ILLBlingLord *)self.delegate enableEditingMode];
 }
 
 - (void) removeButtonClicked:(id) sender  {

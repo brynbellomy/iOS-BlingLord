@@ -1,15 +1,16 @@
 //
-//  SESpringBoard.h
-//  SESpringBoardDemo
+//  ILLBlingLord.h
+//  ILLBlingLord iOS springboard view
 //
-//  Created by Sarp Erdag on 11/5/11.
-//  Copyright (c) 2011 Sarp Erdag. All rights reserved.
+//  Created by bryn austin bellomy on 5/19/12.
+//  Based on code by Sarp Erdag written on 11/5/11.
+//  Copyright (c) 2012 bryn austin bellomy. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
-#import "SEMenuItem.h"
+#import "ILLBlingLordMenuItem.h"
 
-@interface SESpringBoard : UIView <MenuItemDelegate, UIScrollViewDelegate>
+@interface ILLBlingLord : UIView <MenuItemDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, assign, readwrite) BOOL allowsEditing;
 @property (nonatomic, strong, readonly)  NSString *navbarTitle;
