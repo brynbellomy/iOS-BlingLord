@@ -9,31 +9,34 @@
 #import <UIKit/UIKit.h>
 
 @protocol MenuItemDelegate;
-@interface SEMenuItem : UIView {
-    NSString *image;
-    NSString *titleText;
-    UIViewController *vcToLoad;
-    id <MenuItemDelegate> __unsafe_unretained delegate;
-    UIButton *removeButton;   
-}
+@class SEViewController;
 
-@property (nonatomic, assign) int tag;
-@property BOOL isRemovable;
-@property BOOL isInEditingMode;
-@property (nonatomic, unsafe_unretained) id <MenuItemDelegate> delegate;
+@interface SEMenuItem : UIView
 
-+ (id) initWithTitle:(NSString *)title imageName:(NSString *)imageName viewController:(UIViewController *)viewController removable:(BOOL)removable;
+//@property (nonatomic, assign, readwrite) int tag;
+@property (atomic,    assign, readwrite) BOOL isRemovable;
+@property (atomic,    assign, readwrite) BOOL isInEditingMode;
+@property (nonatomic, weak,   readwrite) id<MenuItemDelegate> delegate;
+@property (nonatomic, weak,   readwrite) UIImageView *imageView;
+@property (nonatomic, weak,   readwrite) UILabel *textLabel;
+
++ (id) initWithTitle:(NSString *)title image:(UIImage *)image removable:(BOOL)removable viewController:(UIViewController *)viewController;
++ (id) initWithTitle:(NSString *)title image:(UIImage *)image removable:(BOOL)removable tapHandlerBlock:(dispatch_block_t)tapHandlerBlock;
 
 - (void) enableEditing;
 - (void) disableEditing;
-- (void) updateTag:(int) newTag;
+- (void) updateTag: (int)newTag;
 
 @end
+
 
 @protocol MenuItemDelegate <NSObject>
-@optional
-
-- (void)launch:(int)index :(UIViewController *)vcToLoad;
-- (void)removeFromSpringboard:(int)index;
-
+  @optional
+//    - (void) launch:(int)index :(UIViewController *)vcToLoad;
+    - (void) removeFromSpringboard:(int)index animate:(BOOL)animate;
+    - (void) menuItemWasTapped:(SEMenuItem *)menuItem buttonTag:(int)buttonTag launchViewController:(SEViewController *)viewController;
+    - (void) menuItemWasTapped:(SEMenuItem *)menuItem buttonTag:(int)buttonTag runBlock:(dispatch_block_t)tapHandlerBlock;
 @end
+
+
+
