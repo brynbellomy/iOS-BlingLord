@@ -3,7 +3,7 @@
 
 ## what
 
-**ILLBlingLord** is an iOS springboard view controller class (y’know, it looks like the iPhone/iPad home screen).  Setup is pretty easy.  See below.
+**SEBlingLord** is an iOS springboard view controller class (y’know, it looks like the iPhone/iPad home screen).  Setup is pretty easy.  See below.
 
 
 
@@ -14,7 +14,7 @@
 vc1 = [[MyFacebookViewController alloc] initWithNibName:@"MyFacebookViewController" bundle:nil];
 vc2 = [[MyTwitterViewController alloc] initWithNibName:@"MyTwitterViewController" bundle:nil];
 // create or reference more view controllers here
-// ... also be sure to extend your view controllers from ILLBlingLordViewController
+// ... also be sure to extend your view controllers from SEBlingLordViewController
     
 NSString *facebookIconPath = [[NSBundle mainBundle] pathForResource: @"facebook" ofType: @"png"]; // @@TODO: refactor to framework style
 UIImage *facebookIcon = [UIImage imageWithContentsOfFile: iconPath];
@@ -22,15 +22,15 @@ UIImage *facebookIcon = [UIImage imageWithContentsOfFile: iconPath];
 NSString *twitterIconPath = [[NSBundle mainBundle] pathForResource: @"twitter" ofType: @"png"]; // @@TODO: refactor to framework style
 UIImage *twitterIcon = [UIImage imageWithContentsOfFile: iconPath];
 
-// create an array of ILLBlingLordMenuItem objects
+// create an array of SEBlingLordMenuItem objects
 NSMutableArray *items = [NSMutableArray array];
 
 // these first two menu items automatically push the user to the specified view controller when they're tapped
-[items addObject:[ILLBlingLordMenuItem initWithTitle:@"facebook" image:facebookIcon removable:YES viewController:vc1]];
-[items addObject:[ILLBlingLordMenuItem initWithTitle:@"twitter" image:twitterIcon removable:NO viewController:vc2]];
+[items addObject:[SEBlingLordMenuItem initWithTitle:@"facebook" image:facebookIcon removable:YES viewController:vc1]];
+[items addObject:[SEBlingLordMenuItem initWithTitle:@"twitter" image:twitterIcon removable:NO viewController:vc2]];
 
 // this menu item executes a block when it's tapped
-[items addObject:[ILLBlingLordMenuItem initWithTitle: @"twitter"
+[items addObject:[SEBlingLordMenuItem initWithTitle: @"twitter"
                                                image: twitterIcon
                                            removable: NO
                                      tapHandlerBlock: ^{
@@ -41,9 +41,9 @@ NSMutableArray *items = [NSMutableArray array];
                                      }]];
 // ... etc
     
-// pass the array to a newly created ILLBlingLord and add it to your view
+// pass the array to a newly created SEBlingLord and add it to your view
 // ... but for the love of god, please don't use [UIImage imageNamed:]
-ILLBlingLord *board = [ILLBlingLord initWithTitle:@"Welcome" items:items launcherImage:[UIImage imageNamed:@"navbtn_home.png"]];
+SEBlingLord *board = [SEBlingLord initWithTitle:@"Welcome" items:items launcherImage:[UIImage imageNamed:@"navbtn_home.png"]];
 [self.view addSubview:board];
 ```
 
@@ -54,10 +54,10 @@ ILLBlingLord *board = [ILLBlingLord initWithTitle:@"Welcome" items:items launche
 
 ### automatic navigation bar on/off
 
-if you don't want the navbar, pass `nil` as the title parameter to **ILLBlingLord**'s init method, like so:
+if you don't want the navbar, pass `nil` as the title parameter to **SEBlingLord**'s init method, like so:
 
 ```objective-c
-ILLBlingLord *board = [ILLBlingLord initWithTitle:nil items:items launcherImage:[UIImage imageNamed:@"navbtn_home.png"]];
+SEBlingLord *board = [SEBlingLord initWithTitle:nil items:items launcherImage:[UIImage imageNamed:@"navbtn_home.png"]];
 ```
 
 more to come, perhaps.
@@ -67,8 +67,8 @@ more to come, perhaps.
 
 ## screenshots
 
-![alt text](http://dl.dropbox.com/u/1124427/SESpringBoard.png "ILLBlingLord Paged")
-![alt text](http://dl.dropbox.com/u/1124427/sepringboard_wiggle.png "ILLBlingLord Wiggling")
+![alt text](http://dl.dropbox.com/u/1124427/SESpringBoard.png "SEBlingLord Paged")
+![alt text](http://dl.dropbox.com/u/1124427/sepringboard_wiggle.png "SEBlingLord Wiggling")
 
 
 
