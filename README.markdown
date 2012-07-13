@@ -22,42 +22,51 @@ UIImage *facebookIcon = [UIImage imageWithContentsOfFile: iconPath];
 NSString *twitterIconPath = [[NSBundle mainBundle] pathForResource: @"twitter" ofType: @"png"]; // @@TODO: refactor to framework style
 UIImage *twitterIcon = [UIImage imageWithContentsOfFile: iconPath];
 
-// create an array of SEBlingLordMenuItem objects
-NSMutableArray *items = [NSMutableArray array];
+CGRect menuItemFrame = CGRectMake(0.0f, 0.0f, 60.0f, 60.0f);
 
 // these first two menu items automatically push the user to the specified view controller when they're tapped
-[items addObject:[SEBlingLordMenuItem initWithTitle:@"facebook" image:facebookIcon removable:YES viewController:vc1]];
-[items addObject:[SEBlingLordMenuItem initWithTitle:@"twitter" image:twitterIcon removable:NO viewController:vc2]];
+SEBlingLordMenuItem *item1 =
+    [[SEBlingLordMenuItem alloc] initWithFrame: menuItemFrame
+                                         title: @"Facebook"
+                                         image: facebookIcon
+                                     removable: NO
+                             canTriggerEditing: NO
+                                viewController: vc1];
+SEBlingLordMenuItem *item2 =
+    [[SEBlingLordMenuItem alloc] initWithFrame: menuItemFrame
+                                         title: @"Twitter"
+                                         image: twitterIcon
+                                     removable: NO
+                             canTriggerEditing: NO
+                                viewController: vc2];
 
 // this menu item executes a block when it's tapped
-[items addObject:[SEBlingLordMenuItem initWithTitle: @"twitter"
-                                               image: twitterIcon
-                                           removable: NO
-                                     tapHandlerBlock: ^{
-                                       UIAlertView *someStupidAlert = ...
-                                       // ... etc.
-                                       // note that the block is a simple dispatch_block_t,
-                                       // i.e., it takes no params and returns void.
-                                     }]];
+SEBlingLordMenuItem *item3 =
+    [[SEBlingLordMenuItem alloc] initWithFrame: menuItemFrame
+                                         title: @"Some alert"
+                                         image: someOtherIcon
+                                     removable: NO
+                             canTriggerEditing: NO
+                               tapHandlerBlock: ^{
+                                   UIAlertView *someStupidAlert = ...
+                                   // ... etc.
+                                   // note that the block is a simple dispatch_block_t,
+                                   // i.e., it takes no params and returns void.
+                               }];
 // ... etc
-    
-// pass the array to a newly created SEBlingLord and add it to your view
-// ... but for the love of god, please don't use [UIImage imageNamed:]
-SEBlingLord *board = [SEBlingLord initWithTitle:@"Welcome" items:items launcherImage:[UIImage imageNamed:@"navbtn_home.png"]];
+
+
+// create an array containing the menu items and pass it to a newly created SEBlingLordView 
+NSArray *items = [NSArray arrayWithObjects: item1, item2, item3, nil];
+SEBlingLordView *board = [[SEBlingLordView alloc] initWithFrame: self.view.frame
+                                                       itemSize: menuItemFrame.size
+                                                    itemMargins: CGSizeMake(15.0f, 15.0f)
+                                                   outerMargins: CGSizeMake(10.0f, 10.0f)
+                                                          items: items];
+
+// ... and add the BlingLordView to your view
 [self.view addSubview:board];
-```
 
-
-
-
-## customization
-
-### automatic navigation bar on/off
-
-if you don't want the navbar, pass `nil` as the title parameter to **SEBlingLord**'s init method, like so:
-
-```objective-c
-SEBlingLord *board = [SEBlingLord initWithTitle:nil items:items launcherImage:[UIImage imageNamed:@"navbtn_home.png"]];
 ```
 
 more to come, perhaps.
