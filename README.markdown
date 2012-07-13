@@ -67,6 +67,14 @@ SEBlingLordView *board = [[SEBlingLordView alloc] initWithFrame: self.view.frame
 // ... and add the BlingLordView to your view
 [self.view addSubview:board];
 
+// add more menu items later if necessary
+[board addMenuItem: item4];
+[board addMenuItems: [NSArray arrayWithObjects: item5, item6, item7, nil]];
+
+// and remove them as well
+[board removeMenuItemAtIndex:4 animate:NO];
+[board removeAllMenuItems];
+
 ```
 
 more to come, perhaps.
