@@ -16,10 +16,10 @@ vc2 = [[MyTwitterViewController alloc] initWithNibName:@"MyTwitterViewController
 // create or reference more view controllers here
 // ... also be sure to extend your view controllers from SEBlingLordViewController
     
-NSString *facebookIconPath = [[NSBundle mainBundle] pathForResource: @"facebook" ofType: @"png"]; // @@TODO: refactor to framework style
+NSString *facebookIconPath = [[NSBundle mainBundle] pathForResource: @"facebook" ofType: @"png"];
 UIImage *facebookIcon = [UIImage imageWithContentsOfFile: iconPath];
 
-NSString *twitterIconPath = [[NSBundle mainBundle] pathForResource: @"twitter" ofType: @"png"]; // @@TODO: refactor to framework style
+NSString *twitterIconPath = [[NSBundle mainBundle] pathForResource: @"twitter" ofType: @"png"];
 UIImage *twitterIcon = [UIImage imageWithContentsOfFile: iconPath];
 
 CGRect menuItemFrame = CGRectMake(0.0f, 0.0f, 60.0f, 60.0f);
