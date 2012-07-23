@@ -13,11 +13,11 @@
 		C59151A315BD081C0062C02E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C591519115BD081C0062C02E /* Foundation.framework */; };
 		C59151A615BD081C0062C02E /* libiOS-BlingLord.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C591518E15BD081C0062C02E /* libiOS-BlingLord.a */; };
 		C59151AC15BD081C0062C02E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C59151AA15BD081C0062C02E /* InfoPlist.strings */; };
-		C59151BE15BD08AA0062C02E /* SEBlingLordMenuItem.h in Headers */ = {isa = PBXBuildFile; fileRef = C59151B815BD08AA0062C02E /* SEBlingLordMenuItem.h */; };
+		C59151BE15BD08AA0062C02E /* SEBlingLordMenuItem.h in Headers */ = {isa = PBXBuildFile; fileRef = C59151B815BD08AA0062C02E /* SEBlingLordMenuItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C59151BF15BD08AA0062C02E /* SEBlingLordMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = C59151B915BD08AA0062C02E /* SEBlingLordMenuItem.m */; };
-		C59151C015BD08AA0062C02E /* SEBlingLordView.h in Headers */ = {isa = PBXBuildFile; fileRef = C59151BA15BD08AA0062C02E /* SEBlingLordView.h */; };
+		C59151C015BD08AA0062C02E /* SEBlingLordView.h in Headers */ = {isa = PBXBuildFile; fileRef = C59151BA15BD08AA0062C02E /* SEBlingLordView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C59151C115BD08AA0062C02E /* SEBlingLordView.m in Sources */ = {isa = PBXBuildFile; fileRef = C59151BB15BD08AA0062C02E /* SEBlingLordView.m */; };
-		C59151C215BD08AA0062C02E /* SEBlingLordViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = C59151BC15BD08AA0062C02E /* SEBlingLordViewController.h */; };
+		C59151C215BD08AA0062C02E /* SEBlingLordViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = C59151BC15BD08AA0062C02E /* SEBlingLordViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C59151C315BD08AA0062C02E /* SEBlingLordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C59151BD15BD08AA0062C02E /* SEBlingLordViewController.m */; };
 		C591536615BD47B50062C02E /* SEBlingLordMenuItemSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = C591536515BD47B50062C02E /* SEBlingLordMenuItemSpec.m */; };
 /* End PBXBuildFile section */
@@ -403,6 +403,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				PUBLIC_HEADERS_FOLDER_PATH = "include/$(TARGET_NAME)";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
 			};
@@ -421,6 +422,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				PUBLIC_HEADERS_FOLDER_PATH = "include/$(TARGET_NAME)";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
