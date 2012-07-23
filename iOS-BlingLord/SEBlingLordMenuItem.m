@@ -3,13 +3,13 @@
 //  SEBlingLord iOS springboard view
 //
 //  Created by bryn austin bellomy on 5/19/12.
-//  Copyright (c) 2012 bryn austin bellomy. All rights reserved.
+//  Copyright (c) 2012 robot bubble bath LLC. All rights reserved.
 //
 
+#import <stdlib.h>
+#import <QuartzCore/QuartzCore.h>
 #import "SEBlingLordMenuItem.h"
 #import "SEBlingLordView.h"
-#import <QuartzCore/QuartzCore.h>
-#include <stdlib.h>
 
 @interface SEBlingLordMenuItem ()
   @property (nonatomic, strong, readwrite) UIButton *button;
@@ -26,16 +26,13 @@
 
 @synthesize isRemovable = _isRemovable;
 @synthesize isInEditingMode = _isInEditingMode;
-@synthesize canTriggerSpringboardEditingMode = _canTriggerSpringboardEditingMode;
 @synthesize delegate = _delegate;
-
 @synthesize imageView = _imageView;
 @synthesize imageViewShadowWrapper = _imageViewShadowWrapper;
 @synthesize textLabel = _textLabel;
 @synthesize textLabelShadowWrapper = _textLabelShadowWrapper;
 @synthesize button = _button;
 @synthesize removeButton = _removeButton;
-
 @synthesize vcToLoad = _vcToLoad;
 @synthesize tapHandlerBlock = _tapHandlerBlock;
 @synthesize shouldRunCustomBlockOnTap = _shouldRunCustomBlockOnTap;
@@ -49,14 +46,13 @@
                title: (NSString *)title
                image: (UIImage *)image
            removable: (BOOL)removable
-   canTriggerEditing: (BOOL)canTriggerSpringboardEditingMode
       viewController: (SEBlingLordViewController *)viewController {
   
   self = [super initWithFrame:frame];
   if (self) {
     self.vcToLoad = viewController;
     self.shouldRunCustomBlockOnTap = NO;
-    [self commonInitTitle:title image:image removable:removable canTriggerEditing:canTriggerSpringboardEditingMode];
+    [self commonInitTitle:title image:image removable:removable];
   }
   return self;
 }
@@ -67,14 +63,13 @@
                title: (NSString *)title
                image: (UIImage *)image
            removable: (BOOL)removable
-   canTriggerEditing: (BOOL)canTriggerSpringboardEditingMode
      tapHandlerBlock: (dispatch_block_t)tapHandlerBlock {
   
-  self = [super initWithFrame:frame];         NSLog(@" ===== (MenuItem) >>>> (%f, %f)", frame.size.width, frame.size.height);
+  self = [super initWithFrame:frame];
   if (self) {
     self.tapHandlerBlock = tapHandlerBlock;
     self.shouldRunCustomBlockOnTap = YES;
-    [self commonInitTitle:title image:image removable:removable canTriggerEditing:canTriggerSpringboardEditingMode];
+    [self commonInitTitle:title image:image removable:removable];
   }
   return self;
 }
@@ -83,13 +78,11 @@
 
 - (void) commonInitTitle: (NSString *)title
                    image: (UIImage *)image
-               removable: (BOOL)removable
-       canTriggerEditing: (BOOL)canTriggerSpringboardEditingMode {
+               removable: (BOOL)removable {
   
   self.backgroundColor = [UIColor clearColor];
   self.isInEditingMode = NO;
   self.isRemovable = removable;
-  self.canTriggerSpringboardEditingMode = canTriggerSpringboardEditingMode;
   
   
   // create the UIImageView
@@ -158,17 +151,14 @@
   self.button = [UIButton buttonWithType:UIButtonTypeCustom];
   self.button.frame = CGRectZero;
   self.button.backgroundColor = [UIColor clearColor];
-  self.button.tag = self.tag;
   [self.button addTarget:self action:@selector(clickItem:) forControlEvents:UIControlEventTouchUpInside];
   [self addSubview:self.button];
   
 
-  // add a long-press gesture recognizer for triggering editing mode on the whole springboard (if that's allowed)
+  // add a long-press gesture recognizer for triggering editing mode on the whole springboard
   
-  if (self.canTriggerSpringboardEditingMode) {
-    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(pressedLong:)];
-    [self.button addGestureRecognizer:longPress];
-  }
+  UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(pressedLong:)];
+  [self.button addGestureRecognizer:longPress];
   
   
   // create a remove button for removing item from the board (if it's removable)
@@ -177,33 +167,33 @@
     self.removeButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.removeButton.frame = CGRectZero;
     self.removeButton.backgroundColor = [UIColor clearColor];
-    self.removeButton.tag = self.tag;
     self.removeButton.hidden = YES;
     [self.removeButton setImage:[UIImage imageNamed:@"btn_delete.png"] forState:UIControlStateNormal]; // @@TODO: remove +imageNamed:
-    [self.removeButton addTarget:self action:@selector(removeButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.removeButton addTarget:self action:@selector(removeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:self.removeButton];
+    
+    self.removeButton.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
   }
-
-  // debug coloration
-//  imageViewShadowWrapper.backgroundColor = [UIColor redColor];
-//  imageView.backgroundColor = [UIColor greenColor];
-//  self.backgroundColor = [UIColor greenColor];
-//  textLabel.backgroundColor = [UIColor blueColor];
+  
+  
+  // set up autoresizing masks
+  
+  self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+  self.imageViewShadowWrapper.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+  self.imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+  self.textLabelShadowWrapper.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+  self.textLabel.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+  self.button.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 }
 
 
 - (void) layoutSubviews {
   CGFloat iconDimension = MIN(self.frame.size.width, self.frame.size.height);
-//  NSLog(@"@@@ self.frame:(%f x %f)", self.frame.size.width, self.frame.size.height);
-//  NSLog(@"@@@ iconDimension1: %f", iconDimension);
   
-  CGFloat labelHeight =  MAX(0.2f * iconDimension, 20.0f); // 0.2f * iconDimension;
+  CGFloat labelHeight =  MAX(0.2f * iconDimension, 20.0f);
   labelHeight = MAX(self.frame.size.height - iconDimension, labelHeight);
   
   iconDimension = MIN(self.frame.size.height - labelHeight, iconDimension);
-  
-//  NSLog(@"@@@ iconDimension2: %f", iconDimension);
-//  NSLog(@"@@@ labelHeight: %f", labelHeight);
   
   CGPoint labelLocation = CGPointMake(0.0f, iconDimension);
   CGSize labelSize = CGSizeMake(self.frame.size.width, labelHeight);
@@ -235,40 +225,11 @@
 }
 
 
-//+ (id) initWithTitle:(NSString *)title
-//               image:(UIImage *)image
-//           removable:(BOOL)removable
-//      viewController:(SEBlingLordViewController *)viewController {
-//  
-//	SEBlingLordMenuItem *tmpInstance = [[SEBlingLordMenuItem alloc] initWithTitle:title image:image viewController:viewController removable:removable];
-//	return tmpInstance;
-//}
-//
-//
-//
-//+ (id) initWithTitle:(NSString *)title
-//               image:(UIImage *)image
-//           removable:(BOOL)removable
-//     tapHandlerBlock:(dispatch_block_t)tapHandlerBlock {
-//  
-//	SEBlingLordMenuItem *tmpInstance = [[SEBlingLordMenuItem alloc] initWithTitle:title image:image removable:removable tapHandlerBlock:tapHandlerBlock];
-//	return tmpInstance;
-//}
-
-
-
-- (void) dealloc {
-  self.delegate = nil;
-}
-
-
 
 #pragma mark- UI actions
 #pragma mark-
 
-- (void) clickItem: (id)sender {
-  UIButton *theButton = (UIButton *)sender;
-  
+- (void) clickItem: (id) sender {
   
   // do quick glow-stronger/fade animation
   
@@ -292,7 +253,6 @@
   
   if (self.shouldRunCustomBlockOnTap == YES && self.tapHandlerBlock != nil)
     [self.delegate menuItemWasTapped: self
-                           buttonTag: theButton.tag
                             runBlock: self.tapHandlerBlock];
   
   
@@ -300,24 +260,19 @@
   
   else if (self.vcToLoad != nil)
     [self.delegate menuItemWasTapped: self
-                           buttonTag: theButton.tag
                 launchViewController: self.vcToLoad];
 }
 
 
 
-- (void) pressedLong:(id) sender {
-    // inform the springboard that the menu items are now editable so that the springboard
-    // will place a done button on the navigationbar
-  if (self.canTriggerSpringboardEditingMode)
-    [(SEBlingLordView *)self.delegate enableEditingMode];
+- (void) pressedLong: (id)sender {
+  [self.delegate menuItemWasLongPressed:self];
 }
 
 
 
-- (void) removeButtonClicked:(id) sender  {
-  if (self.isRemovable) // just making sure...
-    [self.delegate removeFromSpringboard:self.tag animate:YES];
+- (void) removeButtonTapped:(id) sender  {
+  [self.delegate removeButtonWasTapped:self];
 }
 
 
@@ -355,11 +310,6 @@
 }
 
 
-
-- (void) setTag:(NSInteger)tag {
-  [super setTag:tag];
-  self.removeButton.tag = tag;
-}
 
 
 

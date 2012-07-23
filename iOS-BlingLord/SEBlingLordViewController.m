@@ -3,7 +3,7 @@
 //  SEBlingLord iOS springboard view
 //
 //  Created by bryn austin bellomy on 5/19/12.
-//  Copyright (c) 2012 bryn austin bellomy. All rights reserved.
+//  Copyright (c) 2012 robot bubble bath LLC. All rights reserved.
 //
 
 #import "SEBlingLordViewController.h"

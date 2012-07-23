@@ -3,19 +3,31 @@
 //  SEBlingLord iOS springboard view
 //
 //  Created by bryn austin bellomy on 5/19/12.
-//  Copyright (c) 2012 bryn austin bellomy. All rights reserved.
+//  Copyright (c) 2012 robot bubble bath LLC. All rights reserved.
 //
 
 #import "SEBlingLordView.h"
 #import "SEBlingLordViewController.h"
+//#import "KJGridLayoutView.h"
+
+
+/**
+ * private interface
+ */
 
 @interface SEBlingLordView () {
-    NSMutableArray *_items;
-  }
+  NSMutableArray *_items;
+}
 
-  @property (nonatomic, strong, readwrite) id closeViewNotificationObserver;
-  @property (nonatomic, strong, readwrite) NSMutableArray *itemCounts;
+@property (nonatomic, strong, readwrite) id closeViewNotificationObserver;
+
 @end
+
+
+
+/**
+ * implementation
+ */
 
 @implementation SEBlingLordView
 
@@ -23,7 +35,6 @@
 @synthesize launcherImage = _launcherImage;
 @synthesize layoutStyle = _layoutStyle;
 @synthesize isInEditingMode = _isInEditingMode;
-@synthesize itemCounts = _itemCounts;
 @synthesize allowsEditing = _allowsEditing;
 @synthesize navigationController = _navigationController;
 @synthesize itemsContainer = _itemsContainer;
@@ -33,6 +44,7 @@
 @synthesize itemMargins = _itemMargins;
 @synthesize outerMargins = _outerMargins;
 @synthesize closeViewNotificationObserver = _closeViewNotificationObserver;
+//@synthesize gridSize = _gridSize;
 
 
 
@@ -57,17 +69,24 @@
 - (id) initWithFrame: (CGRect)frame
             itemSize: (CGSize)itemSize
          itemMargins: (CGSize)itemMargins
+//            gridSize: (KJGridPair)gridSize
         outerMargins: (CGSize)outerMargins
                items: (NSMutableArray *)items {
 
   self = [super initWithFrame:frame];
   if (self) {
-    _items = [NSMutableArray arrayWithCapacity:items.count];
-    [self addMenuItems:items];
+//    // let the view take care of resizing itself upon autorotation
+//    self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//    
+//    self.rowSpacing = itemMargins.width;
+//    self.columnSpacing = itemMargins.height;
+//    _gridSize = gridSize;
     
     _itemSize = itemSize;
     _itemMargins = itemMargins;
     _outerMargins = outerMargins;
+    _items = [NSMutableArray arrayWithCapacity:items.count];
+    [self addMenuItems:items];
     
     self.isInEditingMode = NO;
     self.allowsEditing = YES;
@@ -87,7 +106,7 @@
     
     // add a page control to self to represent the scrollview's current page
     
-    self.pageControl = [[UIPageControl alloc] initWithFrame:CGRectZero];
+    self.pageControl = [[UIPageControl alloc] initWithFrame: CGRectMake(0.0f, self.frame.size.height - 30.0f, self.frame.size.width, 30.0f)];
     self.pageControl.currentPage = 0;
     [self addSubview: self.pageControl];
     
@@ -201,7 +220,6 @@
   
   for (SEBlingLordMenuItem *item in _items) {
     currentPage = floor((CGFloat)currentItem / (CGFloat)itemsPerPage);
-    item.tag = currentItem;
     item.delegate = self;
     item.frame = CGRectMake((additionalCenteringPixels.width  / 2.0f) + self.outerMargins.width  + currentXPos + (currentPage * self.itemsContainer.frame.size.width),
                             (additionalCenteringPixels.height / 2.0f) + self.outerMargins.height + currentYPos,
@@ -225,16 +243,9 @@
   
   // record the item counts for each page
   
-  self.itemCounts = [NSMutableArray array];
-  NSUInteger totalNumberOfItems = _items.count;
-  NSUInteger numberOfFullPages = totalNumberOfItems % itemsPerPage;
-  NSUInteger lastPageItemCount = totalNumberOfItems - (numberOfFullPages % itemsPerPage);
-  
-  for (NSUInteger i = 0; i < numberOfFullPages; i++)
-    [self.itemCounts addObject:[NSNumber numberWithInteger:itemsPerPage]];
-  
-  if (lastPageItemCount != 0)
-    [self.itemCounts addObject:[NSNumber numberWithInteger:lastPageItemCount]];
+//  NSUInteger totalNumberOfItems = _items.count;
+//  NSUInteger numberOfFullPages = totalNumberOfItems % itemsPerPage;
+//  NSUInteger lastPageItemCount = totalNumberOfItems - (numberOfFullPages % itemsPerPage);
   
   self.itemsContainer.contentSize = CGSizeMake(self.itemsContainer.frame.size.width * numberOfPages,
                                                self.itemsContainer.frame.size.height);
@@ -315,10 +326,13 @@
  */
 
 - (void) addMenuItem:(SEBlingLordMenuItem *)menuItem {
+  NSAssert(menuItem != nil, @"menuItem argument is nil.");
+  
   [_items addObject:menuItem];
   [self.itemsContainer addSubview:menuItem];
   
-  [self setNeedsLayout];
+//  KJGridPair newPos = SEGetGridPosition(_items.count, self.gridSize.columns);
+//  [self addSubview:menuItem row:newPos.row column:newPos.col];
 }
 
 
@@ -328,9 +342,16 @@
  */
 
 - (void) addMenuItems:(NSArray *)menuItems {
+  NSAssert(menuItems != nil, @"menuItems argument is nil.");
+  
+//  NSUInteger numCols = self.gridSize.columns;
+  
+  [_items addObjectsFromArray:menuItems];
+  
   for (SEBlingLordMenuItem *menuItem in menuItems) {
-    [_items addObject:menuItem];
     [self.itemsContainer addSubview:menuItem];
+//    KJGridPair newPos = SEGetGridPosition(_items.count, numCols);
+//    [self addSubview:menuItem row:newPos.row column:newPos.col];
   }
   
   [self setNeedsLayout];
@@ -344,6 +365,9 @@
 
 - (void) removeMenuItemAtIndex: (NSUInteger)idx
                        animate: (BOOL)animate {
+  
+  NSAssert(idx < _items.count, @"index argument is out of bounds.");
+  NSAssert(idx < self.subviews.count, @"index argument is out of bounds.");
   
   if (animate) {
     __weak SEBlingLordView *weakSelf = self;
@@ -469,8 +493,15 @@
 #pragma mark- SEBlingLordMenuItem delegate methods
 #pragma mark-
 
+
+- (void) menuItemWasLongPressed:(SEBlingLordMenuItem *)menuItem {
+  if (self.allowsEditing && self.isInEditingMode == NO)
+    self.isInEditingMode = YES;
+}
+
+
+
 - (void) menuItemWasTapped: (SEBlingLordMenuItem *)menuItem
-                 buttonTag: (NSUInteger)buttonTag
                   runBlock: (dispatch_block_t)tapHandlerBlock {
   
   // first disable the editing mode so that items will stop wiggling when an item is launched
@@ -488,7 +519,6 @@
  */
 
 - (void) menuItemWasTapped: (SEBlingLordMenuItem *)menuItem
-                 buttonTag: (NSUInteger)buttonTag
       launchViewController: (SEBlingLordViewController *)viewController {
   
   // if the springboard is in editing mode, do not launch any view controller
@@ -511,9 +541,9 @@
   self.navigationController.view.transform = CGAffineTransformMakeScale(0.1f, 0.1f);
   [self addSubview: self.navigationController.view];
   
-  [UIView animateWithDuration:0.3f  animations:^{
+  [UIView animateWithDuration: 0.3f animations: ^{
     // fade out the buttons
-    for(SEBlingLordMenuItem *item in _items) {
+    for (SEBlingLordMenuItem *item in _items) {
       item.transform = [self offscreenQuadrantTransformForView:item];
       item.alpha = 0.0f;
     }
@@ -521,10 +551,20 @@
     // fade in the selected view
     self.navigationController.view.alpha = 1.0f;
     self.navigationController.view.transform = CGAffineTransformIdentity;
-    [self.navigationController.view setFrame:CGRectMake(0,0, self.bounds.size.width, self.bounds.size.height)];
+    self.navigationController.view.frame = CGRectMake(0.0f, 0.0f, self.bounds.size.width, self.bounds.size.height);
   }];
 }
 
+
+- (void) removeButtonWasTapped:(SEBlingLordMenuItem *)menuItem {
+
+  NSUInteger index = [_items indexOfObject:menuItem];
+  
+  if (index != NSNotFound) {
+    [self removeMenuItemAtIndex: index
+                        animate: YES];
+  }
+}
 
 
 /**
@@ -550,7 +590,7 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)sender {
   CGFloat pageWidth = self.itemsContainer.frame.size.width;
-  NSUInteger page = floor((self.itemsContainer.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+  NSUInteger page = (NSUInteger) (floor((self.itemsContainer.contentOffset.x - pageWidth / 2) / pageWidth) + 1);
   self.pageControl.currentPage = page;
 }
 
@@ -607,15 +647,21 @@
   self.isInEditingMode = NO;
 }
 
+
+
 - (void) setItemSize:(CGSize)itemSize {
   _itemSize = itemSize;
   [self setNeedsLayout];
 }
 
+
+
 - (void) setItemMargins:(CGSize)itemMargins {
   _itemMargins = itemMargins;
   [self setNeedsLayout];
 }
+
+
 
 - (void) setOuterMargins:(CGSize)outerMargins {
   _outerMargins = outerMargins;
