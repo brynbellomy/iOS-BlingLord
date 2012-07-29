@@ -4,3 +4,6 @@
 [submodule "Vendor/KJGridLayout"]
 	path = Vendor/KJGridLayout
 	url = git://github.com/brynbellomy/KJGridLayout.git
+[submodule "Vendor/Bryn.h-iOS"]
+	path = Vendor/Bryn.h-iOS
+	url = git://github.com/brynbellomy/Bryn.h-iOS.git

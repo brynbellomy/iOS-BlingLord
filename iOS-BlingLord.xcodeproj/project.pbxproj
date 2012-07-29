@@ -20,6 +20,8 @@
 		C59151C215BD08AA0062C02E /* SEBlingLordViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = C59151BC15BD08AA0062C02E /* SEBlingLordViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C59151C315BD08AA0062C02E /* SEBlingLordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C59151BD15BD08AA0062C02E /* SEBlingLordViewController.m */; };
 		C591536615BD47B50062C02E /* SEBlingLordMenuItemSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = C591536515BD47B50062C02E /* SEBlingLordMenuItemSpec.m */; };
+		C5C85F0915C513AB00D3471C /* Bryn.h in Headers */ = {isa = PBXBuildFile; fileRef = C5C85F0615C513AB00D3471C /* Bryn.h */; };
+		C5C85F0A15C513AB00D3471C /* Bryn.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C85F0715C513AB00D3471C /* Bryn.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +63,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C5133C4315BDECAE0026E5ED /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C591518E15BD081C0062C02E /* libiOS-BlingLord.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libiOS-BlingLord.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C591519115BD081C0062C02E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C591519515BD081C0062C02E /* iOS-BlingLord-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iOS-BlingLord-Prefix.pch"; sourceTree = "<group>"; };
@@ -77,6 +80,8 @@
 		C59151BD15BD08AA0062C02E /* SEBlingLordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEBlingLordViewController.m; sourceTree = "<group>"; };
 		C591528E15BD09C10062C02E /* Kiwi.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Kiwi.xcodeproj; sourceTree = "<group>"; };
 		C591536515BD47B50062C02E /* SEBlingLordMenuItemSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEBlingLordMenuItemSpec.m; sourceTree = "<group>"; };
+		C5C85F0615C513AB00D3471C /* Bryn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bryn.h; sourceTree = "<group>"; };
+		C5C85F0715C513AB00D3471C /* Bryn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bryn.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +110,7 @@
 		C591518315BD081C0062C02E = {
 			isa = PBXGroup;
 			children = (
+				C5133C4315BDECAE0026E5ED /* QuartzCore.framework */,
 				C591519315BD081C0062C02E /* iOS-BlingLord */,
 				C59151A715BD081C0062C02E /* iOS-BlingLordTests */,
 				C591519015BD081C0062C02E /* Frameworks */,
@@ -175,6 +181,7 @@
 		C59151C415BD09C10062C02E /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				C5C85F0415C513AB00D3471C /* Bryn.h-iOS */,
 				C59151C515BD09C10062C02E /* Kiwi */,
 			);
 			path = Vendor;
@@ -199,6 +206,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		C5C85F0415C513AB00D3471C /* Bryn.h-iOS */ = {
+			isa = PBXGroup;
+			children = (
+				C5C85F0615C513AB00D3471C /* Bryn.h */,
+				C5C85F0715C513AB00D3471C /* Bryn.m */,
+			);
+			path = "Bryn.h-iOS";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -209,6 +225,7 @@
 				C59151BE15BD08AA0062C02E /* SEBlingLordMenuItem.h in Headers */,
 				C59151C015BD08AA0062C02E /* SEBlingLordView.h in Headers */,
 				C59151C215BD08AA0062C02E /* SEBlingLordViewController.h in Headers */,
+				C5C85F0915C513AB00D3471C /* Bryn.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -350,6 +367,7 @@
 				C59151BF15BD08AA0062C02E /* SEBlingLordMenuItem.m in Sources */,
 				C59151C115BD08AA0062C02E /* SEBlingLordView.m in Sources */,
 				C59151C315BD08AA0062C02E /* SEBlingLordViewController.m in Sources */,
+				C5C85F0A15C513AB00D3471C /* Bryn.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -435,8 +453,10 @@
 				DSTROOT = /tmp/iOS_BlingLord.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iOS-BlingLord/iOS-BlingLord-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -447,8 +467,10 @@
 				DSTROOT = /tmp/iOS_BlingLord.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iOS-BlingLord/iOS-BlingLord-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -460,11 +482,14 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 				);
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iOS-BlingLord/iOS-BlingLord-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = Vendor/Kiwi/Kiwi;
 				INFOPLIST_FILE = "iOS-BlingLordTests/iOS-BlingLordTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
@@ -476,11 +501,14 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 				);
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iOS-BlingLord/iOS-BlingLord-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = Vendor/Kiwi/Kiwi;
 				INFOPLIST_FILE = "iOS-BlingLordTests/iOS-BlingLordTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;

@@ -32,21 +32,6 @@
 @implementation SEBlingLordView
 
 @dynamic items;
-@synthesize launcherImage = _launcherImage;
-@synthesize layoutStyle = _layoutStyle;
-@synthesize isInEditingMode = _isInEditingMode;
-@synthesize allowsEditing = _allowsEditing;
-@synthesize navigationController = _navigationController;
-@synthesize itemsContainer = _itemsContainer;
-@synthesize pageControl = _pageControl;
-@synthesize doneEditingButton = _doneEditingButton;
-@synthesize itemSize = _itemSize;
-@synthesize itemMargins = _itemMargins;
-@synthesize outerMargins = _outerMargins;
-@synthesize closeViewNotificationObserver = _closeViewNotificationObserver;
-//@synthesize gridSize = _gridSize;
-
-
 
 #pragma mark- View lifecycle
 #pragma mark-
@@ -86,7 +71,9 @@
     _itemMargins = itemMargins;
     _outerMargins = outerMargins;
     _items = [NSMutableArray arrayWithCapacity:items.count];
-    [self addMenuItems:items];
+    if (items != nil) {
+      [self addMenuItems:items];
+    }
     
     self.isInEditingMode = NO;
     self.allowsEditing = YES;
@@ -243,10 +230,6 @@
   
   // record the item counts for each page
   
-//  NSUInteger totalNumberOfItems = _items.count;
-//  NSUInteger numberOfFullPages = totalNumberOfItems % itemsPerPage;
-//  NSUInteger lastPageItemCount = totalNumberOfItems - (numberOfFullPages % itemsPerPage);
-  
   self.itemsContainer.contentSize = CGSizeMake(self.itemsContainer.frame.size.width * numberOfPages,
                                                self.itemsContainer.frame.size.height);
   
@@ -376,7 +359,7 @@
       
       // find the item ...
       __strong SEBlingLordView *strongSelf = weakSelf;
-      SEBlingLordMenuItem *item = [_items objectAtIndex:idx];
+      SEBlingLordMenuItem *item = _items[idx];
       
       [_items removeObjectAtIndex:idx];
       [item removeFromSuperview];  // remove the item from the scrollview
@@ -390,7 +373,7 @@
     }];
   }
   else {
-    SEBlingLordMenuItem *item = [_items objectAtIndex:idx];
+    SEBlingLordMenuItem *item = _items[idx];
     
     [_items removeObjectAtIndex:idx];
     [item removeFromSuperview]; // remove the item from the scrollview

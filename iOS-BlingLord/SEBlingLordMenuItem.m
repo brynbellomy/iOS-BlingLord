@@ -235,14 +235,14 @@
   
   CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"shadowRadius"];
   anim.duration = 0.07f;
-  anim.fromValue = [NSNumber numberWithFloat:7.0f];
-  anim.toValue = [NSNumber numberWithFloat:17.0f];
+  anim.fromValue = @7.0f;
+  anim.toValue = @17.0f;
   anim.autoreverses = YES;
   
   CABasicAnimation *anim2 = [CABasicAnimation animationWithKeyPath:@"shadowOpacity"];
   anim2.duration = 0.07f;
-  anim2.fromValue = [NSNumber numberWithFloat:0.8f];
-  anim2.toValue = [NSNumber numberWithFloat:1.0f];
+  anim2.fromValue = @0.8f;
+  anim2.toValue = @1.0f;
   anim2.autoreverses = YES;
   
   [self.glowLayer addAnimation:anim forKey:@"shadowRadius"];
