@@ -2,7 +2,7 @@ Pod::Spec.new do |s|
   s.name         = "iOS-BlingLord"
   s.version      = "0.0.1"
   s.source       = { :git => "/Users/bryn/repo/iOS-BlingLord.git", :branch => "develop" }
-  s.platform     = :ios, '4.3'
+  s.platform     = :ios #, '4.3'
   s.source_files = 'iOS-BlingLord/*.{h,m}'
 
   s.requires_arc = true
