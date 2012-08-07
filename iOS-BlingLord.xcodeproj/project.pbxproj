@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		804AD7F11C7D4AF5A93BF4D3 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B47B1C5E304B4FCCB022C83E /* libPods.a */; };
 		C591519215BD081C0062C02E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C591519115BD081C0062C02E /* Foundation.framework */; };
 		C59151A015BD081C0062C02E /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C591519F15BD081C0062C02E /* SenTestingKit.framework */; };
 		C59151A215BD081C0062C02E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C59151A115BD081C0062C02E /* UIKit.framework */; };
@@ -20,8 +21,6 @@
 		C59151C215BD08AA0062C02E /* SEBlingLordViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = C59151BC15BD08AA0062C02E /* SEBlingLordViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C59151C315BD08AA0062C02E /* SEBlingLordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C59151BD15BD08AA0062C02E /* SEBlingLordViewController.m */; };
 		C591536615BD47B50062C02E /* SEBlingLordMenuItemSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = C591536515BD47B50062C02E /* SEBlingLordMenuItemSpec.m */; };
-		C5C85F0915C513AB00D3471C /* Bryn.h in Headers */ = {isa = PBXBuildFile; fileRef = C5C85F0615C513AB00D3471C /* Bryn.h */; };
-		C5C85F0A15C513AB00D3471C /* Bryn.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C85F0715C513AB00D3471C /* Bryn.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,9 +62,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9A141AE934984EEFBD97C371 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
+		B47B1C5E304B4FCCB022C83E /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5133C4315BDECAE0026E5ED /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C591518E15BD081C0062C02E /* libiOS-BlingLord.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libiOS-BlingLord.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		C591519115BD081C0062C02E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		C591519115BD081C0062C02E /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C591519515BD081C0062C02E /* iOS-BlingLord-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iOS-BlingLord-Prefix.pch"; sourceTree = "<group>"; };
 		C591519E15BD081C0062C02E /* iOS-BlingLordTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "iOS-BlingLordTests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C591519F15BD081C0062C02E /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -90,6 +91,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C591519215BD081C0062C02E /* Foundation.framework in Frameworks */,
+				804AD7F11C7D4AF5A93BF4D3 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,6 +118,7 @@
 				C591519015BD081C0062C02E /* Frameworks */,
 				C591518F15BD081C0062C02E /* Products */,
 				C59151C415BD09C10062C02E /* Vendor */,
+				9A141AE934984EEFBD97C371 /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -134,6 +137,7 @@
 				C591519115BD081C0062C02E /* Foundation.framework */,
 				C591519F15BD081C0062C02E /* SenTestingKit.framework */,
 				C59151A115BD081C0062C02E /* UIKit.framework */,
+				B47B1C5E304B4FCCB022C83E /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -225,7 +229,6 @@
 				C59151BE15BD08AA0062C02E /* SEBlingLordMenuItem.h in Headers */,
 				C59151C015BD08AA0062C02E /* SEBlingLordView.h in Headers */,
 				C59151C215BD08AA0062C02E /* SEBlingLordViewController.h in Headers */,
-				C5C85F0915C513AB00D3471C /* Bryn.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,6 +242,7 @@
 				C591518A15BD081C0062C02E /* Sources */,
 				C591518B15BD081C0062C02E /* Frameworks */,
 				C591518C15BD081C0062C02E /* Headers */,
+				718EBA6491C342D5A73112A4 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -344,6 +348,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		718EBA6491C342D5A73112A4 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+		};
 		C591519C15BD081C0062C02E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -367,7 +385,6 @@
 				C59151BF15BD08AA0062C02E /* SEBlingLordMenuItem.m in Sources */,
 				C59151C115BD08AA0062C02E /* SEBlingLordView.m in Sources */,
 				C59151C315BD08AA0062C02E /* SEBlingLordViewController.m in Sources */,
-				C5C85F0A15C513AB00D3471C /* Bryn.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -449,6 +466,7 @@
 		};
 		C59151B315BD081C0062C02E /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9A141AE934984EEFBD97C371 /* Pods.xcconfig */;
 			buildSettings = {
 				DSTROOT = /tmp/iOS_BlingLord.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -463,6 +481,7 @@
 		};
 		C59151B415BD081C0062C02E /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9A141AE934984EEFBD97C371 /* Pods.xcconfig */;
 			buildSettings = {
 				DSTROOT = /tmp/iOS_BlingLord.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
