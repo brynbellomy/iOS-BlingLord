@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name         = "iOS-BlingLord"
   s.version      = "0.0.1"
-  s.source       = { :git => "/Users/bryn/repo/BrynKit.git" }
+  s.source       = { :git => "/Users/bryn/repo/iOS-BlingLord.git" }
   s.platform     = :ios, '4.3'
   s.source_files = 'iOS-BlingLord/*.{h,m}'
 
