@@ -391,7 +391,7 @@
   for (SEBlingLordMenuItem *item in _items) {
     [item removeFromSuperview];
   }
-  _items = [NSMutableArray array];
+  _items = $marr;
   [self setNeedsLayout];
 }
 
