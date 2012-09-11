@@ -1,6 +1,0 @@
-[submodule "Vendor/Kiwi"]
-	path = Vendor/Kiwi
-	url = git://github.com/allending/Kiwi.git
-[submodule "Vendor/KJGridLayout"]
-	path = Vendor/KJGridLayout
-	url = git://github.com/brynbellomy/KJGridLayout.git
