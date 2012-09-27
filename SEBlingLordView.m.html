@@ -1,0 +1,688 @@
+<!DOCTYPE html><html><head><title>SEBlingLordView.m</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="doc-style.css"><script src="doc-filelist.js"></script><script>var relativeDir = '', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"><div class="heading h4"><a href="#initwithframe-">initWithFrame:</a></div><div class="heading h4"><a href="#initwithframe-itemsize-itemmargins-outermargins-items-">initWithFrame:itemSize:itemMargins:outerMargins:items:</a></div><div class="heading h4"><a href="#dealloc">dealloc</a></div><div class="heading h4"><a href="#setlayoutstyle-">setLayoutStyle:</a></div><div class="heading h4"><a href="#layoutsubviews">layoutSubviews</a></div><div class="heading h4"><a href="#layoutmenuitems">layoutMenuItems</a></div><div class="heading h4"><a href="#createcloseviewnotificationobserver">createCloseViewNotificationObserver</a></div><div class="heading h4"><a href="#destroycloseviewnotificationobserver">destroyCloseViewNotificationObserver</a></div><div class="heading h4"><a href="#addmenuitem-">addMenuItem:</a></div><div class="heading h4"><a href="#addmenuitems-">addMenuItems:</a></div><div class="heading h4"><a href="#removemenuitematindex-animate-">removeMenuItemAtIndex:animate:</a></div><div class="heading h4"><a href="#removeallmenuitems">removeAllMenuItems</a></div><div class="heading h4"><a href="#setitems-">setItems:</a></div><div class="heading h4"><a href="#items">items</a></div><div class="heading h4"><a href="#menuitemwaslongpressed-">menuItemWasLongPressed:</a></div><div class="heading h4"><a href="#menuitemwastapped-runblock-">menuItemWasTapped:runBlock:</a></div><div class="heading h4"><a href="#menuitemwastapped-launchviewcontroller-">menuItemWasTapped:launchViewController:</a></div><div class="heading h4"><a href="#removebuttonwastapped-">removeButtonWasTapped:</a></div><div class="heading h4"><a href="#offscreenquadranttransformforview-">offscreenQuadrantTransformForView:</a></div><div class="heading h4"><a href="#scrollviewdidscroll-">scrollViewDidScroll:</a></div><div class="heading h4"><a href="#setallowsediting-">setAllowsEditing:</a></div><div class="heading h4"><a href="#setisineditingmode-">setIsInEditingMode:</a></div><div class="heading h4"><a href="#doneeditingbuttonclicked">doneEditingButtonClicked</a></div><div class="heading h4"><a href="#setitemsize-">setItemSize:</a></div><div class="heading h4"><a href="#setitemmargins-">setItemMargins:</a></div><div class="heading h4"><a href="#setoutermargins-">setOuterMargins:</a></div></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"><h1>SEBlingLordView.m</h1></td><td class="code highlight"></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+</td><td class="code highlight"><div class="highlight"><pre><span class="cp">//</span>
+<span class="cp">//  SEBlingLordView.m</span>
+<span class="cp">//  SEBlingLord iOS springboard view</span>
+<span class="cp">//</span>
+<span class="cp">//  Created by bryn austin bellomy on 5/19/12.</span>
+<span class="cp">//  Copyright (c) 2012 robot bubble bath LLC. All rights reserved.</span>
+<span class="cp">//</span>
+
+<span class="cp">#import &lt;BrynKit/BrynKit.h&gt;</span>
+<span class="cp">#import &quot;SEBlingLordView.h&quot;</span>
+<span class="cp">#import &quot;SEBlingLordViewController.h&quot;</span>
+
+
+<span class="cm">/**</span>
+<span class="cm"> * private interface</span>
+<span class="cm"> */</span>
+
+<span class="k">@interface</span> <span class="nc">SEBlingLordView</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="n">NSMutableArray</span> <span class="o">*</span><span class="n">_items</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="kt">id</span> <span class="n">closeViewNotificationObserver</span><span class="p">;</span>
+
+<span class="k">@end</span>
+
+
+
+<span class="cm">/**</span>
+<span class="cm"> * implementation</span>
+<span class="cm"> */</span>
+
+<span class="k">@implementation</span> <span class="nc">SEBlingLordView</span>
+
+<span class="k">@dynamic</span> <span class="n">items</span><span class="p">;</span>
+
+<span class="cp">#pragma mark- View lifecycle</span>
+<span class="cp">#pragma mark-</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="initwithframe-">
+  <h4>
+    <a href="#initwithframe-" class="pilcrow">&#182;</a>
+    initWithFrame:
+  </h4>
+</div>
+</div><div class="body"><p>Simple initializer; replaces the -initWithFrame: inherited from UIView.</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">CGRect</span><code class="name">frame</code></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">id</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span> <span class="nf">initWithFrame:</span> <span class="p">(</span><span class="n">CGRect</span><span class="p">)</span><span class="nv">frame</span> <span class="p">{</span>
+  <span class="n">self</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span> <span class="nl">initWithFrame:</span><span class="n">frame</span> <span class="nl">itemSize:</span><span class="n">CGSizeZero</span> <span class="nl">itemMargins:</span><span class="n">CGSizeZero</span> <span class="nl">outerMargins:</span><span class="n">CGSizeZero</span> <span class="nl">items:</span><span class="nb">nil</span><span class="p">];</span>
+  <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="initwithframe-itemsize-itemmargins-outermargins-items-">
+  <h4>
+    <a href="#initwithframe-itemsize-itemmargins-outermargins-items-" class="pilcrow">&#182;</a>
+    initWithFrame:itemSize:itemMargins:outerMargins:items:
+  </h4>
+</div>
+</div><div class="body"><p>Designated initializer.</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">CGRect</span><code class="name">frame</code></div><div class="dox_tag_detail"><span class="dox_type">CGSize</span><code class="name">itemSize</code></div><div class="dox_tag_detail"><span class="dox_type">CGSize</span><code class="name">itemMargins</code></div><div class="dox_tag_detail"><span class="dox_type">CGSize</span><code class="name">outerMargins</code></div><div class="dox_tag_detail"><span class="dox_type">NSMutableArray*</span><code class="name">items</code></div><div class="dox_tag_title"></div><div class="dox_tag_detail"></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">id</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span> <span class="nf">initWithFrame:</span> <span class="p">(</span><span class="n">CGRect</span><span class="p">)</span><span class="nv">frame</span>
+            <span class="nf">itemSize:</span> <span class="p">(</span><span class="n">CGSize</span><span class="p">)</span><span class="nv">itemSize</span>
+         <span class="nf">itemMargins:</span> <span class="p">(</span><span class="n">CGSize</span><span class="p">)</span><span class="nv">itemMargins</span>
+<span class="c1">//            gridSize: (KJGridPair)gridSize</span>
+        <span class="nf">outerMargins:</span> <span class="p">(</span><span class="n">CGSize</span><span class="p">)</span><span class="nv">outerMargins</span>
+               <span class="nf">items:</span> <span class="p">(</span><span class="n">NSMutableArray</span> <span class="o">*</span><span class="p">)</span><span class="nv">items</span> <span class="p">{</span>
+
+  <span class="n">self</span> <span class="o">=</span> <span class="p">[</span><span class="n">super</span> <span class="nl">initWithFrame:</span><span class="n">frame</span><span class="p">];</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="p">{</span>
+<span class="c1">//    // let the view take care of resizing itself upon autorotation</span>
+<span class="c1">//    self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;</span>
+<span class="c1">//</span>
+<span class="c1">//    self.rowSpacing = itemMargins.width;</span>
+<span class="c1">//    self.columnSpacing = itemMargins.height;</span>
+<span class="c1">//    _gridSize = gridSize;</span>
+
+    <span class="n">_itemSize</span> <span class="o">=</span> <span class="n">itemSize</span><span class="p">;</span>
+    <span class="n">_itemMargins</span> <span class="o">=</span> <span class="n">itemMargins</span><span class="p">;</span>
+    <span class="n">_outerMargins</span> <span class="o">=</span> <span class="n">outerMargins</span><span class="p">;</span>
+    <span class="n">_items</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableArray</span> <span class="nl">arrayWithCapacity:</span><span class="n">items</span><span class="p">.</span><span class="n">count</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">self</span> <span class="nl">addMenuItems:</span><span class="n">items</span><span class="p">];</span>
+
+    <span class="n">self</span><span class="p">.</span><span class="n">isInEditingMode</span> <span class="o">=</span> <span class="n">NO</span><span class="p">;</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">allowsEditing</span> <span class="o">=</span> <span class="n">YES</span><span class="p">;</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">userInteractionEnabled</span> <span class="o">=</span> <span class="n">YES</span><span class="p">;</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">layoutStyle</span> <span class="o">=</span> <span class="n">SEBlingLordLayoutStyleCenterVertically</span> <span class="o">|</span> <span class="n">SEBlingLordLayoutStyleCenterHorizontally</span><span class="p">;</span>
+
+
+    <span class="c1">// create a container view to put the menu items inside</span>
+
+    <span class="n">self</span><span class="p">.</span><span class="n">itemsContainer</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIScrollView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame:</span> <span class="n">self</span><span class="p">.</span><span class="n">frame</span><span class="p">];</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">itemsContainer</span><span class="p">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="n">self</span><span class="p">;</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">itemsContainer</span><span class="p">.</span><span class="n">scrollEnabled</span> <span class="o">=</span> <span class="n">YES</span><span class="p">;</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">itemsContainer</span><span class="p">.</span><span class="n">pagingEnabled</span> <span class="o">=</span> <span class="n">YES</span><span class="p">;</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">itemsContainer</span><span class="p">.</span><span class="n">showsHorizontalScrollIndicator</span> <span class="o">=</span> <span class="n">NO</span><span class="p">;</span>
+    <span class="p">[</span><span class="n">self</span> <span class="nl">addSubview:</span> <span class="n">self</span><span class="p">.</span><span class="n">itemsContainer</span><span class="p">];</span>
+
+
+    <span class="c1">// add a page control to self to represent the scrollview&#39;s current page</span>
+
+    <span class="n">self</span><span class="p">.</span><span class="n">pageControl</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIPageControl</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame:</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="mf">0.0f</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">-</span> <span class="mf">30.0f</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="mf">30.0f</span><span class="p">)];</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">pageControl</span><span class="p">.</span><span class="n">currentPage</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">[</span><span class="n">self</span> <span class="nl">addSubview:</span> <span class="n">self</span><span class="p">.</span><span class="n">pageControl</span><span class="p">];</span>
+
+
+    <span class="c1">// add observer to respond to &quot;view closed&quot; events</span>
+
+    <span class="p">[</span><span class="n">self</span> <span class="n">createCloseViewNotificationObserver</span><span class="p">];</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="dealloc">
+  <h4>
+    <a href="#dealloc" class="pilcrow">&#182;</a>
+    dealloc
+  </h4>
+</div>
+</div><div class="body"></div><div class="details"><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">dealloc</span> <span class="p">{</span>
+
+  <span class="c1">// remove the notification observer added in the init method</span>
+
+  <span class="p">[</span><span class="n">self</span> <span class="n">destroyCloseViewNotificationObserver</span><span class="p">];</span>
+
+
+  <span class="c1">// unset all inverse delegate relationships before i disappear back into the void</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">SEBlingLordMenuItem</span> <span class="o">*</span><span class="n">item</span> <span class="k">in</span> <span class="n">_items</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">item</span><span class="p">.</span><span class="n">delegate</span> <span class="o">==</span> <span class="n">self</span><span class="p">)</span>
+      <span class="n">item</span><span class="p">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">itemsContainer</span><span class="p">.</span><span class="n">delegate</span> <span class="o">==</span> <span class="n">self</span><span class="p">)</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">itemsContainer</span><span class="p">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+
+
+  <span class="c1">// ... *pop!*</span>
+<span class="p">}</span>
+
+
+
+<span class="cp">#pragma mark- Subview layout</span>
+<span class="cp">#pragma mark-</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="setlayoutstyle-">
+  <h4>
+    <a href="#setlayoutstyle-" class="pilcrow">&#182;</a>
+    setLayoutStyle:
+  </h4>
+</div>
+</div><div class="body"><p>Override the default setter so we can trigger -setNeedsLayout when
+layoutStyle changes.</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">SEBlingLordLayoutStyle</span><code class="name">layoutStyle</code></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">setLayoutStyle:</span><span class="p">(</span><span class="n">SEBlingLordLayoutStyle</span><span class="p">)</span><span class="nv">layoutStyle</span> <span class="p">{</span>
+  <span class="n">_layoutStyle</span> <span class="o">=</span> <span class="n">layoutStyle</span><span class="p">;</span>
+  <span class="p">[</span><span class="n">self</span> <span class="n">setNeedsLayout</span><span class="p">];</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="layoutsubviews">
+  <h4>
+    <a href="#layoutsubviews" class="pilcrow">&#182;</a>
+    layoutSubviews
+  </h4>
+</div>
+</div><div class="body"><p>Overrides UIView's -layoutSubviews.</p></div><div class="details"><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">layoutSubviews</span> <span class="p">{</span>
+  <span class="p">[</span><span class="n">super</span> <span class="n">layoutSubviews</span><span class="p">];</span>
+  <span class="p">[</span><span class="n">self</span> <span class="n">layoutMenuItems</span><span class="p">];</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="layoutmenuitems">
+  <h4>
+    <a href="#layoutmenuitems" class="pilcrow">&#182;</a>
+    layoutMenuItems
+  </h4>
+</div>
+</div><div class="body"><p>This is broken out into its own method because it needs to be callable by
+-removeMenuItem:animated: when animating the re-layout of the menu items after
+one is removed.  You shouldn't do animations inside of -layoutSubviews, but
+the required functionality is identical, so moving this code to a separate
+method callable by both of the aforementioned methods was the most concise
+solution.</p></div><div class="details"><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">layoutMenuItems</span> <span class="p">{</span>
+
+  <span class="c1">// calculate some helpful stuff</span>
+
+  <span class="n">NSUInteger</span> <span class="n">itemsPerRow</span> <span class="o">=</span> <span class="n">floor</span><span class="p">((</span><span class="n">self</span><span class="p">.</span><span class="n">itemsContainer</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span>  <span class="o">-</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">self</span><span class="p">.</span><span class="n">outerMargins</span><span class="p">.</span><span class="n">width</span><span class="p">))</span>
+                                 <span class="o">/</span> <span class="p">((</span><span class="n">self</span><span class="p">.</span><span class="n">itemMargins</span><span class="p">.</span><span class="n">width</span>  <span class="o">+</span> <span class="n">self</span><span class="p">.</span><span class="n">itemSize</span><span class="p">.</span><span class="n">width</span> <span class="p">)</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">itemMargins</span><span class="p">.</span><span class="n">width</span><span class="p">));</span>
+  <span class="n">NSUInteger</span> <span class="n">rowsPerPage</span> <span class="o">=</span> <span class="n">floor</span><span class="p">((</span><span class="n">self</span><span class="p">.</span><span class="n">itemsContainer</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">-</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">self</span><span class="p">.</span><span class="n">outerMargins</span><span class="p">.</span><span class="n">height</span><span class="p">))</span>
+                                 <span class="o">/</span> <span class="p">((</span><span class="n">self</span><span class="p">.</span><span class="n">itemMargins</span><span class="p">.</span><span class="n">height</span> <span class="o">+</span> <span class="n">self</span><span class="p">.</span><span class="n">itemSize</span><span class="p">.</span><span class="n">height</span><span class="p">)</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">itemMargins</span><span class="p">.</span><span class="n">height</span><span class="p">));</span>
+  <span class="n">NSUInteger</span> <span class="n">itemsPerPage</span> <span class="o">=</span> <span class="n">rowsPerPage</span> <span class="o">*</span> <span class="n">itemsPerRow</span><span class="p">;</span>
+  <span class="n">NSUInteger</span> <span class="n">numberOfPages</span> <span class="o">=</span> <span class="n">ceil</span><span class="p">((</span><span class="n">Float32</span><span class="p">)</span><span class="n">_items</span><span class="p">.</span><span class="n">count</span> <span class="o">/</span> <span class="p">(</span><span class="n">Float32</span><span class="p">)</span><span class="n">itemsPerPage</span><span class="p">);</span>
+
+
+  <span class="c1">// calculate positions for each item within the itemsContainer UIScrollView</span>
+
+  <span class="n">NSUInteger</span> <span class="n">currentItem</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="n">NSUInteger</span> <span class="n">currentPage</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="n">CGFloat</span> <span class="n">currentXPos</span> <span class="o">=</span> <span class="mf">0.0f</span><span class="p">;</span>
+  <span class="n">CGFloat</span> <span class="n">currentYPos</span> <span class="o">=</span> <span class="mf">0.0f</span><span class="p">;</span>
+
+  <span class="c1">// if auto-centering (horiz, vert, or both) is enabled, calculate the number</span>
+  <span class="c1">// of pixels we&#39;ll have to add to the left and/or top margins to center the</span>
+  <span class="c1">// items in the view</span>
+
+  <span class="n">CGSize</span> <span class="n">additionalCenteringPixels</span> <span class="o">=</span> <span class="n">CGSizeZero</span><span class="p">;</span>
+
+  <span class="k">if</span> <span class="p">((</span><span class="n">self</span><span class="p">.</span><span class="n">layoutStyle</span> <span class="o">&amp;</span> <span class="n">SEBlingLordLayoutStyleCenterHorizontally</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">additionalCenteringPixels</span><span class="p">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">itemsContainer</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span>
+                                          <span class="o">-</span> <span class="p">(</span><span class="n">itemsPerRow</span> <span class="o">*</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">itemSize</span><span class="p">.</span><span class="n">width</span> <span class="o">+</span> <span class="n">self</span><span class="p">.</span><span class="n">itemMargins</span><span class="p">.</span><span class="n">width</span><span class="p">)</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">itemMargins</span><span class="p">.</span><span class="n">width</span><span class="p">)</span>
+                                          <span class="o">-</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">outerMargins</span><span class="p">.</span><span class="n">width</span> <span class="o">*</span> <span class="mf">2.0f</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="k">if</span> <span class="p">((</span><span class="n">self</span><span class="p">.</span><span class="n">layoutStyle</span> <span class="o">&amp;</span> <span class="n">SEBlingLordLayoutStyleCenterVertically</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">additionalCenteringPixels</span><span class="p">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">itemsContainer</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span>
+                                          <span class="o">-</span> <span class="p">(</span><span class="n">rowsPerPage</span> <span class="o">*</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">itemSize</span><span class="p">.</span><span class="n">height</span> <span class="o">+</span> <span class="n">self</span><span class="p">.</span><span class="n">itemMargins</span><span class="p">.</span><span class="n">height</span><span class="p">)</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">itemMargins</span><span class="p">.</span><span class="n">height</span><span class="p">)</span>
+                                          <span class="o">-</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">outerMargins</span><span class="p">.</span><span class="n">height</span> <span class="o">*</span> <span class="mf">2.0f</span><span class="p">);</span>
+  <span class="p">}</span>
+
+
+  <span class="c1">// loop through all of the menu items and place them</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">SEBlingLordMenuItem</span> <span class="o">*</span><span class="n">item</span> <span class="k">in</span> <span class="n">_items</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">currentPage</span> <span class="o">=</span> <span class="n">floor</span><span class="p">((</span><span class="n">CGFloat</span><span class="p">)</span><span class="n">currentItem</span> <span class="o">/</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="n">itemsPerPage</span><span class="p">);</span>
+    <span class="n">item</span><span class="p">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="n">self</span><span class="p">;</span>
+    <span class="n">item</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">((</span><span class="n">additionalCenteringPixels</span><span class="p">.</span><span class="n">width</span>  <span class="o">/</span> <span class="mf">2.0f</span><span class="p">)</span> <span class="o">+</span> <span class="n">self</span><span class="p">.</span><span class="n">outerMargins</span><span class="p">.</span><span class="n">width</span>  <span class="o">+</span> <span class="n">currentXPos</span> <span class="o">+</span> <span class="p">(</span><span class="n">currentPage</span> <span class="o">*</span> <span class="n">self</span><span class="p">.</span><span class="n">itemsContainer</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">),</span>
+                            <span class="p">(</span><span class="n">additionalCenteringPixels</span><span class="p">.</span><span class="n">height</span> <span class="o">/</span> <span class="mf">2.0f</span><span class="p">)</span> <span class="o">+</span> <span class="n">self</span><span class="p">.</span><span class="n">outerMargins</span><span class="p">.</span><span class="n">height</span> <span class="o">+</span> <span class="n">currentYPos</span><span class="p">,</span>
+                            <span class="n">self</span><span class="p">.</span><span class="n">itemSize</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">itemSize</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
+
+    <span class="n">currentXPos</span> <span class="o">+=</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">itemSize</span><span class="p">.</span><span class="n">width</span> <span class="o">+</span> <span class="n">self</span><span class="p">.</span><span class="n">itemMargins</span><span class="p">.</span><span class="n">width</span><span class="p">);</span>
+    <span class="n">currentItem</span><span class="o">++</span><span class="p">;</span>
+
+    <span class="c1">// start over on next row</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">currentItem</span> <span class="o">%</span> <span class="n">itemsPerRow</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">currentYPos</span> <span class="o">+=</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">itemSize</span><span class="p">.</span><span class="n">height</span> <span class="o">+</span> <span class="n">self</span><span class="p">.</span><span class="n">itemMargins</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
+      <span class="n">currentXPos</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// start over on new page</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">currentItem</span> <span class="o">%</span> <span class="n">itemsPerPage</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">currentYPos</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+
+  <span class="c1">// record the item counts for each page</span>
+
+<span class="c1">//  NSUInteger totalNumberOfItems = _items.count;</span>
+<span class="c1">//  NSUInteger numberOfFullPages = totalNumberOfItems % itemsPerPage;</span>
+<span class="c1">//  NSUInteger lastPageItemCount = totalNumberOfItems - (numberOfFullPages % itemsPerPage);</span>
+
+  <span class="n">self</span><span class="p">.</span><span class="n">itemsContainer</span><span class="p">.</span><span class="n">contentSize</span> <span class="o">=</span> <span class="n">CGSizeMake</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">itemsContainer</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">*</span> <span class="n">numberOfPages</span><span class="p">,</span>
+                                               <span class="n">self</span><span class="p">.</span><span class="n">itemsContainer</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
+
+
+  <span class="c1">// set the page control&#39;s frame relative to the size and position of the scrollview</span>
+
+  <span class="n">self</span><span class="p">.</span><span class="n">pageControl</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">itemsContainer</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">x</span><span class="p">,</span>
+                                      <span class="n">self</span><span class="p">.</span><span class="n">itemsContainer</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">self</span><span class="p">.</span><span class="n">itemsContainer</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">,</span>
+                                      <span class="n">self</span><span class="p">.</span><span class="n">itemsContainer</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="mf">20.0f</span><span class="p">);</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">numberOfPages</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">pageControl</span><span class="p">.</span><span class="n">numberOfPages</span> <span class="o">=</span> <span class="n">numberOfPages</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+
+<span class="cp">#pragma mark- Notification handlers</span>
+<span class="cp">#pragma mark-</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="createcloseviewnotificationobserver">
+  <h4>
+    <a href="#createcloseviewnotificationobserver" class="pilcrow">&#182;</a>
+    createCloseViewNotificationObserver
+  </h4>
+</div>
+</div><div class="body"><p>Creates the notification observer triggered when the SEBlingLordNotificationCloseView
+notification is posted.  The notification handler responds to this by performing
+a UIView animation to make the closed view seem to reduce in size until it
+disappears.</p></div><div class="details"><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">createCloseViewNotificationObserver</span> <span class="p">{</span>
+
+  <span class="err">@</span><span class="n">weakify</span><span class="p">(</span><span class="n">self</span><span class="p">);</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">closeViewNotificationObserver</span> <span class="o">=</span>
+    <span class="p">[[</span><span class="n">NSNotificationCenter</span> <span class="n">defaultCenter</span><span class="p">]</span>
+         <span class="nl">addObserverForName:</span> <span class="n">SEBlingLordNotificationCloseView</span>
+                     <span class="nl">object:</span> <span class="nb">nil</span> <span class="nl">queue:</span> <span class="p">[</span><span class="n">NSOperationQueue</span> <span class="n">mainQueue</span><span class="p">]</span>
+                 <span class="nl">usingBlock:</span> <span class="o">^</span><span class="p">(</span><span class="n">NSNotification</span> <span class="o">*</span><span class="n">note</span><span class="p">)</span> <span class="p">{</span>
+
+                         <span class="n">__block</span> <span class="n">UIView</span> <span class="o">*</span><span class="n">viewToRemove</span> <span class="o">=</span> <span class="p">(</span><span class="n">UIView</span> <span class="o">*</span><span class="p">)</span><span class="n">note</span><span class="p">.</span><span class="n">object</span><span class="p">;</span>
+
+                         <span class="c1">// create an animation of the view disappearing</span>
+
+                         <span class="p">[</span><span class="n">UIView</span> <span class="nl">animateWithDuration:</span><span class="mf">0.3f</span> <span class="nl">animations:</span><span class="o">^</span><span class="p">{</span>
+                               <span class="err">@</span><span class="n">strongify</span><span class="p">(</span><span class="n">self</span><span class="p">);</span>
+
+                               <span class="n">viewToRemove</span><span class="p">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.0f</span><span class="p">;</span>
+                               <span class="n">viewToRemove</span><span class="p">.</span><span class="n">transform</span> <span class="o">=</span> <span class="n">CGAffineTransformMakeScale</span><span class="p">(</span><span class="mf">0.1f</span><span class="p">,</span> <span class="mf">0.1f</span><span class="p">);</span>
+
+                               <span class="k">for</span> <span class="p">(</span><span class="n">SEBlingLordMenuItem</span> <span class="o">*</span><span class="n">item</span> <span class="k">in</span> <span class="n">self</span><span class="p">.</span><span class="n">items</span><span class="p">)</span> <span class="p">{</span>
+                                 <span class="n">item</span><span class="p">.</span><span class="n">transform</span> <span class="o">=</span> <span class="n">CGAffineTransformIdentity</span><span class="p">;</span>
+                                 <span class="n">item</span><span class="p">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.f</span><span class="p">;</span>
+                               <span class="p">}</span>
+
+                         <span class="p">}</span> <span class="nl">completion:</span> <span class="o">^</span><span class="p">(</span><span class="kt">BOOL</span> <span class="n">finished</span><span class="p">)</span> <span class="p">{</span>
+                               <span class="p">[</span><span class="n">viewToRemove</span> <span class="n">removeFromSuperview</span><span class="p">];</span>
+                         <span class="p">}];</span>
+                 <span class="p">}];</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="destroycloseviewnotificationobserver">
+  <h4>
+    <a href="#destroycloseviewnotificationobserver" class="pilcrow">&#182;</a>
+    destroyCloseViewNotificationObserver
+  </h4>
+</div>
+</div><div class="body"><p>Destroys the notification handler for SEBlingLordNotificationCloseView.</p></div><div class="details"><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">destroyCloseViewNotificationObserver</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">closeViewNotificationObserver</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">[[</span><span class="n">NSNotificationCenter</span> <span class="n">defaultCenter</span><span class="p">]</span> <span class="nl">removeObserver:</span><span class="n">self</span><span class="p">.</span><span class="n">closeViewNotificationObserver</span><span class="p">];</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">closeViewNotificationObserver</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+
+
+<span class="cp">#pragma mark- Public methods for adding/removing items</span>
+<span class="cp">#pragma mark-</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="addmenuitem-">
+  <h4>
+    <a href="#addmenuitem-" class="pilcrow">&#182;</a>
+    addMenuItem:
+  </h4>
+</div>
+</div><div class="body"><p>Add a single menu item.</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">SEBlingLordMenuItem*</span><code class="name">menuItem</code></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">addMenuItem:</span><span class="p">(</span><span class="n">SEBlingLordMenuItem</span> <span class="o">*</span><span class="p">)</span><span class="nv">menuItem</span> <span class="p">{</span>
+  <span class="n">NSAssert</span><span class="p">(</span><span class="n">menuItem</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">,</span> <span class="s">@&quot;menuItem argument is nil.&quot;</span><span class="p">);</span>
+
+  <span class="p">[</span><span class="n">_items</span> <span class="nl">addObject:</span><span class="n">menuItem</span><span class="p">];</span>
+  <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">itemsContainer</span> <span class="nl">addSubview:</span><span class="n">menuItem</span><span class="p">];</span>
+
+<span class="c1">//  KJGridPair newPos = SEGetGridPosition(_items.count, self.gridSize.columns);</span>
+<span class="c1">//  [self addSubview:menuItem row:newPos.row column:newPos.col];</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="addmenuitems-">
+  <h4>
+    <a href="#addmenuitems-" class="pilcrow">&#182;</a>
+    addMenuItems:
+  </h4>
+</div>
+</div><div class="body"><p>Add an array of menu items.</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">NSArray*</span><code class="name">menuItems</code></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">addMenuItems:</span><span class="p">(</span><span class="n">NSArray</span> <span class="o">*</span><span class="p">)</span><span class="nv">menuItems</span> <span class="p">{</span>
+  <span class="n">NSAssert</span><span class="p">(</span><span class="n">menuItems</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">,</span> <span class="s">@&quot;menuItems argument is nil.&quot;</span><span class="p">);</span>
+
+<span class="c1">//  NSUInteger numCols = self.gridSize.columns;</span>
+
+  <span class="p">[</span><span class="n">_items</span> <span class="nl">addObjectsFromArray:</span><span class="n">menuItems</span><span class="p">];</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">SEBlingLordMenuItem</span> <span class="o">*</span><span class="n">menuItem</span> <span class="k">in</span> <span class="n">menuItems</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">itemsContainer</span> <span class="nl">addSubview:</span><span class="n">menuItem</span><span class="p">];</span>
+<span class="c1">//    KJGridPair newPos = SEGetGridPosition(_items.count, numCols);</span>
+<span class="c1">//    [self addSubview:menuItem row:newPos.row column:newPos.col];</span>
+  <span class="p">}</span>
+
+  <span class="p">[</span><span class="n">self</span> <span class="n">setNeedsLayout</span><span class="p">];</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="removemenuitematindex-animate-">
+  <h4>
+    <a href="#removemenuitematindex-animate-" class="pilcrow">&#182;</a>
+    removeMenuItemAtIndex:animate:
+  </h4>
+</div>
+</div><div class="body"><p>Removes a given menu item.</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">NSUInteger</span><code class="name">idx</code></div><div class="dox_tag_detail"><span class="dox_type">BOOL</span><code class="name">animate</code></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">removeMenuItemAtIndex:</span> <span class="p">(</span><span class="n">NSUInteger</span><span class="p">)</span><span class="nv">idx</span>
+                       <span class="nf">animate:</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nv">animate</span> <span class="p">{</span>
+
+  <span class="n">NSAssert</span><span class="p">(</span><span class="n">idx</span> <span class="o">&lt;</span> <span class="n">_items</span><span class="p">.</span><span class="n">count</span><span class="p">,</span> <span class="s">@&quot;index argument is out of bounds.&quot;</span><span class="p">);</span>
+  <span class="n">NSAssert</span><span class="p">(</span><span class="n">idx</span> <span class="o">&lt;</span> <span class="n">self</span><span class="p">.</span><span class="n">subviews</span><span class="p">.</span><span class="n">count</span><span class="p">,</span> <span class="s">@&quot;index argument is out of bounds.&quot;</span><span class="p">);</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">animate</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="err">@</span><span class="n">weakify</span><span class="p">(</span><span class="n">self</span><span class="p">);</span>
+    <span class="p">[</span><span class="n">UIView</span> <span class="nl">animateWithDuration:</span><span class="mf">0.2f</span> <span class="nl">animations:</span> <span class="o">^</span><span class="p">{</span>
+
+      <span class="c1">// find the item ...</span>
+      <span class="err">@</span><span class="n">strongify</span><span class="p">(</span><span class="n">self</span><span class="p">);</span>
+      <span class="n">SEBlingLordMenuItem</span> <span class="o">*</span><span class="n">item</span> <span class="o">=</span> <span class="p">[</span><span class="n">_items</span> <span class="nl">objectAtIndex:</span><span class="n">idx</span><span class="p">];</span>
+
+      <span class="p">[</span><span class="n">_items</span> <span class="nl">removeObjectAtIndex:</span><span class="n">idx</span><span class="p">];</span>
+      <span class="p">[</span><span class="n">item</span> <span class="n">removeFromSuperview</span><span class="p">];</span>  <span class="c1">// remove the item from the scrollview</span>
+      <span class="p">[</span><span class="n">self</span> <span class="n">layoutMenuItems</span><span class="p">];</span> <span class="c1">// reposition the other items to fill the gap</span>
+
+    <span class="p">}</span> <span class="nl">completion:</span><span class="o">^</span><span class="p">(</span><span class="kt">BOOL</span> <span class="n">finished</span><span class="p">)</span> <span class="p">{</span>
+
+      <span class="err">@</span><span class="n">strongify</span><span class="p">(</span><span class="n">self</span><span class="p">);</span>
+      <span class="p">[</span><span class="n">self</span> <span class="n">setNeedsLayout</span><span class="p">];</span> <span class="c1">// just in case</span>
+
+    <span class="p">}];</span>
+  <span class="p">}</span>
+  <span class="k">else</span> <span class="p">{</span>
+    <span class="n">SEBlingLordMenuItem</span> <span class="o">*</span><span class="n">item</span> <span class="o">=</span> <span class="p">[</span><span class="n">_items</span> <span class="nl">objectAtIndex:</span><span class="n">idx</span><span class="p">];</span>
+
+    <span class="p">[</span><span class="n">_items</span> <span class="nl">removeObjectAtIndex:</span><span class="n">idx</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">item</span> <span class="n">removeFromSuperview</span><span class="p">];</span> <span class="c1">// remove the item from the scrollview</span>
+    <span class="p">[</span><span class="n">self</span> <span class="n">setNeedsLayout</span><span class="p">];</span>
+  <span class="p">}</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="removeallmenuitems">
+  <h4>
+    <a href="#removeallmenuitems" class="pilcrow">&#182;</a>
+    removeAllMenuItems
+  </h4>
+</div>
+</div><div class="body"><p>Removes all menu items from the springboard.</p></div><div class="details"><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">removeAllMenuItems</span> <span class="p">{</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">SEBlingLordMenuItem</span> <span class="o">*</span><span class="n">item</span> <span class="k">in</span> <span class="n">_items</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">[</span><span class="n">item</span> <span class="n">removeFromSuperview</span><span class="p">];</span>
+  <span class="p">}</span>
+  <span class="n">_items</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableArray</span> <span class="n">array</span><span class="p">];</span>
+  <span class="p">[</span><span class="n">self</span> <span class="n">setNeedsLayout</span><span class="p">];</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="setitems-">
+  <h4>
+    <a href="#setitems-" class="pilcrow">&#182;</a>
+    setItems:
+  </h4>
+</div>
+</div><div class="body"><p>Make sure we properly remove the existing menu items (if any) before adding
+a new set.</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">NSArray*</span><code class="name">items</code></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">setItems:</span><span class="p">(</span><span class="n">NSArray</span> <span class="o">*</span><span class="p">)</span><span class="nv">items</span> <span class="p">{</span>
+  <span class="p">[</span><span class="n">self</span> <span class="n">removeAllMenuItems</span><span class="p">];</span>
+  <span class="n">_items</span> <span class="o">=</span> <span class="p">[</span><span class="n">items</span> <span class="n">mutableCopy</span><span class="p">];</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="items">
+  <h4>
+    <a href="#items" class="pilcrow">&#182;</a>
+    items
+  </h4>
+</div>
+</div><div class="body"><p>Return a non-mutable version of the items array to prevent improper access.</p></div><div class="details"><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">NSArray*</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="n">NSArray</span> <span class="o">*</span><span class="p">)</span> <span class="nf">items</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">[</span><span class="n">NSArray</span> <span class="nl">arrayWithArray:</span><span class="n">_items</span><span class="p">];</span>
+<span class="p">}</span>
+
+
+<span class="cp">//- (void)removeFromSpringboard:(NSUInteger)index animate:(BOOL)animate {</span>
+<span class="cp">//</span>
+<span class="cp">//  // Remove the selected menu item from the springboard, it will have a animation while disappearing</span>
+<span class="cp">//  SEBlingLordMenuItem *menuItem = [self.items objectAtIndex:index];</span>
+<span class="cp">//  [menuItem removeFromSuperview];</span>
+<span class="cp">//</span>
+<span class="cp">//  NSUInteger numberOfItemsInCurrentPage = [((NSNumber *)[self.itemCounts objectAtIndex:self.pageControl.currentPage]) unsignedIntegerValue];</span>
+<span class="cp">//</span>
+<span class="cp">//  // First find the index of the current item with respect of the current page</span>
+<span class="cp">//  // so that only the items coming after the current item will be repositioned.</span>
+<span class="cp">//  // The index of the item can be found by looking at its coordinates</span>
+<span class="cp">//  NSUInteger mult = ((NSUInteger)menuItem.frame.origin.y) / 95;</span>
+<span class="cp">//  NSUInteger add = ((NSUInteger)menuItem.frame.origin.x % 300)/100;</span>
+<span class="cp">//  NSUInteger pageSpecificIndex = (mult*3) + add;</span>
+<span class="cp">//  NSUInteger remainingNumberOfItemsInPage = numberOfItemsInCurrentPage-pageSpecificIndex;</span>
+<span class="cp">//</span>
+<span class="cp">//  // Select the items listed after the deleted menu item</span>
+<span class="cp">//  // and move each of the ones on the current page, one step back.</span>
+<span class="cp">//  // The first item of each row becomes the last item of the previous row.</span>
+<span class="cp">//  for (NSUInteger i = index+1; i&lt;[self.items count]; i++) {</span>
+<span class="cp">//    SEBlingLordMenuItem *item = [self.items objectAtIndex:i];</span>
+<span class="cp">//    if (animate == YES) {</span>
+<span class="cp">//      [UIView animateWithDuration:0.2 animations:^{</span>
+<span class="cp">//</span>
+<span class="cp">//        // Only reposition the items in the current page, coming after the current item</span>
+<span class="cp">//        if (i &lt; index + remainingNumberOfItemsInPage) {</span>
+<span class="cp">//</span>
+<span class="cp">//          NSUInteger intVal = item.frame.origin.x;</span>
+<span class="cp">//          // Check if it is the first item in the row</span>
+<span class="cp">//          if (intVal % 3 == 0)</span>
+<span class="cp">//            [item setFrame:CGRectMake(item.frame.origin.x+200, item.frame.origin.y-95, item.frame.size.width, item.frame.size.height)];</span>
+<span class="cp">//          else</span>
+<span class="cp">//            [item setFrame:CGRectMake(item.frame.origin.x-100, item.frame.origin.y, item.frame.size.width, item.frame.size.height)];</span>
+<span class="cp">//        }</span>
+<span class="cp">//</span>
+<span class="cp">//        // Update the tag to match with the index. Since the an item is being removed from the array,</span>
+<span class="cp">//        // all the items&#39; tags coming after the current item has to be decreased by 1.</span>
+<span class="cp">//        item.tag--;</span>
+<span class="cp">//      }];</span>
+<span class="cp">//    }</span>
+<span class="cp">//    else {</span>
+<span class="cp">//      item.tag--;</span>
+<span class="cp">//    }</span>
+<span class="cp">//  }</span>
+<span class="cp">//  // remove the item from the array of items</span>
+<span class="cp">//  [self.items removeObjectAtIndex:index];</span>
+<span class="cp">//  // also decrease the record of the count of items on the current page and save it in the array holding the data</span>
+<span class="cp">//  numberOfItemsInCurrentPage--;</span>
+<span class="cp">//  [self.itemCounts replaceObjectAtIndex: self.pageControl.currentPage</span>
+<span class="cp">//                             withObject:[NSNumber numberWithInteger:numberOfItemsInCurrentPage]];</span>
+<span class="cp">//}</span>
+
+
+
+
+<span class="cp">#pragma mark- SEBlingLordMenuItem delegate methods</span>
+<span class="cp">#pragma mark-</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="menuitemwaslongpressed-">
+  <h4>
+    <a href="#menuitemwaslongpressed-" class="pilcrow">&#182;</a>
+    menuItemWasLongPressed:
+  </h4>
+</div>
+</div><div class="body"></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">SEBlingLordMenuItem*</span><code class="name">menuItem</code></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">menuItemWasLongPressed:</span><span class="p">(</span><span class="n">SEBlingLordMenuItem</span> <span class="o">*</span><span class="p">)</span><span class="nv">menuItem</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">allowsEditing</span> <span class="o">&amp;&amp;</span> <span class="n">self</span><span class="p">.</span><span class="n">isInEditingMode</span> <span class="o">==</span> <span class="n">NO</span><span class="p">)</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">isInEditingMode</span> <span class="o">=</span> <span class="n">YES</span><span class="p">;</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="menuitemwastapped-runblock-">
+  <h4>
+    <a href="#menuitemwastapped-runblock-" class="pilcrow">&#182;</a>
+    menuItemWasTapped:runBlock:
+  </h4>
+</div>
+</div><div class="body"></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">SEBlingLordMenuItem*</span><code class="name">menuItem</code></div><div class="dox_tag_detail"><span class="dox_type">dispatch_block_t</span><code class="name">tapHandlerBlock</code></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">menuItemWasTapped:</span> <span class="p">(</span><span class="n">SEBlingLordMenuItem</span> <span class="o">*</span><span class="p">)</span><span class="nv">menuItem</span>
+                  <span class="nf">runBlock:</span> <span class="p">(</span><span class="n">dispatch_block_t</span><span class="p">)</span><span class="nv">tapHandlerBlock</span> <span class="p">{</span>
+
+  <span class="c1">// first disable the editing mode so that items will stop wiggling when an item is launched</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">isInEditingMode</span> <span class="o">=</span> <span class="n">NO</span><span class="p">;</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">tapHandlerBlock</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">tapHandlerBlock</span><span class="p">();</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+
+
+<span class="cm">/**</span>
+<span class="cm"> * @@TODO: refactor this sumbitch</span>
+<span class="cm"> */</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="menuitemwastapped-launchviewcontroller-">
+  <h4>
+    <a href="#menuitemwastapped-launchviewcontroller-" class="pilcrow">&#182;</a>
+    menuItemWasTapped:launchViewController:
+  </h4>
+</div>
+</div><div class="body"></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">SEBlingLordMenuItem*</span><code class="name">menuItem</code></div><div class="dox_tag_detail"><span class="dox_type">SEBlingLordViewController*</span><code class="name">viewController</code></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">menuItemWasTapped:</span> <span class="p">(</span><span class="n">SEBlingLordMenuItem</span> <span class="o">*</span><span class="p">)</span><span class="nv">menuItem</span>
+      <span class="nf">launchViewController:</span> <span class="p">(</span><span class="n">SEBlingLordViewController</span> <span class="o">*</span><span class="p">)</span><span class="nv">viewController</span> <span class="p">{</span>
+
+  <span class="c1">// if the springboard is in editing mode, do not launch any view controller</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">isInEditingMode</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">;</span>
+
+  <span class="c1">// first disable the editing mode so that items will stop wiggling when an item is launched</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">isInEditingMode</span> <span class="o">=</span> <span class="n">NO</span><span class="p">;</span>
+
+  <span class="c1">// manually trigger the appear method</span>
+  <span class="p">[</span><span class="n">viewController</span> <span class="nl">viewDidAppear:</span><span class="n">YES</span><span class="p">];</span>
+
+  <span class="c1">// attach the launcher image</span>
+  <span class="n">viewController</span><span class="p">.</span><span class="n">launcherImage</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">launcherImage</span><span class="p">;</span>
+
+  <span class="c1">// create a navigation bar</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">navigationController</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UINavigationController</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithRootViewController:</span><span class="n">viewController</span><span class="p">];</span>
+  <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">navigationController</span> <span class="nl">viewDidAppear:</span><span class="n">YES</span><span class="p">];</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">.</span><span class="n">view</span><span class="p">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.0f</span><span class="p">;</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">.</span><span class="n">view</span><span class="p">.</span><span class="n">transform</span> <span class="o">=</span> <span class="n">CGAffineTransformMakeScale</span><span class="p">(</span><span class="mf">0.1f</span><span class="p">,</span> <span class="mf">0.1f</span><span class="p">);</span>
+  <span class="p">[</span><span class="n">self</span> <span class="nl">addSubview:</span> <span class="n">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">.</span><span class="n">view</span><span class="p">];</span>
+
+  <span class="p">[</span><span class="n">UIView</span> <span class="nl">animateWithDuration:</span> <span class="mf">0.3f</span> <span class="nl">animations:</span> <span class="o">^</span><span class="p">{</span>
+    <span class="c1">// fade out the buttons</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">SEBlingLordMenuItem</span> <span class="o">*</span><span class="n">item</span> <span class="k">in</span> <span class="n">_items</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">item</span><span class="p">.</span><span class="n">transform</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span> <span class="nl">offscreenQuadrantTransformForView:</span><span class="n">item</span><span class="p">];</span>
+      <span class="n">item</span><span class="p">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.0f</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// fade in the selected view</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">.</span><span class="n">view</span><span class="p">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0f</span><span class="p">;</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">.</span><span class="n">view</span><span class="p">.</span><span class="n">transform</span> <span class="o">=</span> <span class="n">CGAffineTransformIdentity</span><span class="p">;</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">.</span><span class="n">view</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="mf">0.0f</span><span class="p">,</span> <span class="mf">0.0f</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
+  <span class="p">}];</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="removebuttonwastapped-">
+  <h4>
+    <a href="#removebuttonwastapped-" class="pilcrow">&#182;</a>
+    removeButtonWasTapped:
+  </h4>
+</div>
+</div><div class="body"></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">SEBlingLordMenuItem*</span><code class="name">menuItem</code></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">removeButtonWasTapped:</span><span class="p">(</span><span class="n">SEBlingLordMenuItem</span> <span class="o">*</span><span class="p">)</span><span class="nv">menuItem</span> <span class="p">{</span>
+
+  <span class="n">NSUInteger</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="n">_items</span> <span class="nl">indexOfObject:</span><span class="n">menuItem</span><span class="p">];</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="o">!=</span> <span class="n">NSNotFound</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">[</span><span class="n">self</span> <span class="nl">removeMenuItemAtIndex:</span> <span class="n">index</span>
+                        <span class="nl">animate:</span> <span class="n">YES</span><span class="p">];</span>
+  <span class="p">}</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="offscreenquadranttransformforview-">
+  <h4>
+    <a href="#offscreenquadranttransformforview-" class="pilcrow">&#182;</a>
+    offscreenQuadrantTransformForView:
+  </h4>
+</div>
+</div><div class="body"><p>Transition animation function required for the springboard look and feel.
+Used by menuItemWasTapped:buttonTag:launchViewController:.</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">UIView*</span><code class="name">theView</code></div><div class="dox_tag_title"></div><div class="dox_tag_detail"></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">CGAffineTransform</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="n">CGAffineTransform</span><span class="p">)</span> <span class="nf">offscreenQuadrantTransformForView:</span> <span class="p">(</span><span class="n">UIView</span> <span class="o">*</span><span class="p">)</span><span class="nv">theView</span> <span class="p">{</span>
+  <span class="n">CGPoint</span> <span class="n">parentMidpoint</span> <span class="o">=</span> <span class="n">CGPointMake</span><span class="p">(</span><span class="n">CGRectGetMidX</span><span class="p">(</span><span class="n">theView</span><span class="p">.</span><span class="n">superview</span><span class="p">.</span><span class="n">bounds</span><span class="p">),</span> <span class="n">CGRectGetMidY</span><span class="p">(</span><span class="n">theView</span><span class="p">.</span><span class="n">superview</span><span class="p">.</span><span class="n">bounds</span><span class="p">));</span>
+  <span class="n">CGFloat</span> <span class="n">xSign</span> <span class="o">=</span> <span class="p">(</span><span class="n">theView</span><span class="p">.</span><span class="n">center</span><span class="p">.</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">parentMidpoint</span><span class="p">.</span><span class="n">x</span><span class="p">)</span> <span class="o">?</span> <span class="o">-</span><span class="mf">1.f</span> <span class="o">:</span> <span class="mf">1.f</span><span class="p">;</span>
+  <span class="n">CGFloat</span> <span class="n">ySign</span> <span class="o">=</span> <span class="p">(</span><span class="n">theView</span><span class="p">.</span><span class="n">center</span><span class="p">.</span><span class="n">y</span> <span class="o">&lt;</span> <span class="n">parentMidpoint</span><span class="p">.</span><span class="n">y</span><span class="p">)</span> <span class="o">?</span> <span class="o">-</span><span class="mf">1.f</span> <span class="o">:</span> <span class="mf">1.f</span><span class="p">;</span>
+  <span class="k">return</span> <span class="n">CGAffineTransformMakeTranslation</span><span class="p">(</span><span class="n">xSign</span> <span class="o">*</span> <span class="n">parentMidpoint</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">ySign</span> <span class="o">*</span> <span class="n">parentMidpoint</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+<span class="p">}</span>
+
+
+
+<span class="cp">#pragma mark- UIScrollView Delegate Methods</span>
+<span class="cp">#pragma mark-</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="scrollviewdidscroll-">
+  <h4>
+    <a href="#scrollviewdidscroll-" class="pilcrow">&#182;</a>
+    scrollViewDidScroll:
+  </h4>
+</div>
+</div><div class="body"><p>Respond to the scrollView scrolling by changing which page we're on.</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">UIScrollView*</span><code class="name">sender</code></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">scrollViewDidScroll:</span><span class="p">(</span><span class="n">UIScrollView</span> <span class="o">*</span><span class="p">)</span><span class="nv">sender</span> <span class="p">{</span>
+  <span class="n">CGFloat</span> <span class="n">pageWidth</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">itemsContainer</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">;</span>
+  <span class="n">NSUInteger</span> <span class="n">page</span> <span class="o">=</span> <span class="p">(</span><span class="n">NSUInteger</span><span class="p">)</span> <span class="p">(</span><span class="n">floor</span><span class="p">((</span><span class="n">self</span><span class="p">.</span><span class="n">itemsContainer</span><span class="p">.</span><span class="n">contentOffset</span><span class="p">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">pageWidth</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">pageWidth</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">pageControl</span><span class="p">.</span><span class="n">currentPage</span> <span class="o">=</span> <span class="n">page</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+
+<span class="cp">#pragma mark- Editing mode on/off</span>
+<span class="cp">#pragma mark-</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="setallowsediting-">
+  <h4>
+    <a href="#setallowsediting-" class="pilcrow">&#182;</a>
+    setAllowsEditing:
+  </h4>
+</div>
+</div><div class="body"><p>Set whether editing the menu items is allowed, and, if we're setting it to
+"editing not allowed" and we happen to be IN editing mode right now, automatically
+cancel editing mode.</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">BOOL</span><code class="name">allowsEditing</code></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">setAllowsEditing:</span><span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nv">allowsEditing</span> <span class="p">{</span>
+
+  <span class="n">_allowsEditing</span> <span class="o">=</span> <span class="n">allowsEditing</span><span class="p">;</span>
+
+  <span class="c1">// update whether or not we&#39;re in editing mode (i.e., if we ARE already, and</span>
+  <span class="c1">// we&#39;ve just set &quot;allowsEditing&quot; to NO, then auto-disable editing mode so we</span>
+  <span class="c1">// don&#39;t end up in an inconsistent state</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">isInEditingMode</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">isInEditingMode</span><span class="p">;</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="setisineditingmode-">
+  <h4>
+    <a href="#setisineditingmode-" class="pilcrow">&#182;</a>
+    setIsInEditingMode:
+  </h4>
+</div>
+</div><div class="body"><p>Enable or disable editing mode.</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">BOOL</span><code class="name">isInEditingMode</code></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">setIsInEditingMode:</span><span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nv">isInEditingMode</span> <span class="p">{</span>
+
+  <span class="c1">// if editing isn&#39;t allowed, make sure it can&#39;t be enabled</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">allowsEditing</span> <span class="o">==</span> <span class="n">NO</span><span class="p">)</span>
+    <span class="n">isInEditingMode</span> <span class="o">=</span> <span class="n">NO</span><span class="p">;</span>
+  <span class="k">else</span>
+    <span class="n">_isInEditingMode</span> <span class="o">=</span> <span class="n">isInEditingMode</span><span class="p">;</span>
+
+  <span class="c1">// tell all of the menu items what&#39;s up</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">SEBlingLordMenuItem</span> <span class="o">*</span><span class="n">item</span> <span class="k">in</span> <span class="n">_items</span><span class="p">)</span>
+    <span class="n">item</span><span class="p">.</span><span class="n">isInEditingMode</span> <span class="o">=</span> <span class="n">isInEditingMode</span><span class="p">;</span>
+
+  <span class="c1">// tell the &quot;done editing&quot; button what&#39;s up</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">doneEditingButton</span><span class="p">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="o">!</span><span class="n">isInEditingMode</span><span class="p">;</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="doneeditingbuttonclicked">
+  <h4>
+    <a href="#doneeditingbuttonclicked" class="pilcrow">&#182;</a>
+    doneEditingButtonClicked
+  </h4>
+</div>
+</div><div class="body"><p>Default behavior for the "done editing" button (sets editing mode to NO).</p></div><div class="details"><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">IBAction</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span> <span class="nf">doneEditingButtonClicked</span> <span class="p">{</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">isInEditingMode</span> <span class="o">=</span> <span class="n">NO</span><span class="p">;</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="setitemsize-">
+  <h4>
+    <a href="#setitemsize-" class="pilcrow">&#182;</a>
+    setItemSize:
+  </h4>
+</div>
+</div><div class="body"></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">CGSize</span><code class="name">itemSize</code></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">setItemSize:</span><span class="p">(</span><span class="n">CGSize</span><span class="p">)</span><span class="nv">itemSize</span> <span class="p">{</span>
+  <span class="n">_itemSize</span> <span class="o">=</span> <span class="n">itemSize</span><span class="p">;</span>
+  <span class="p">[</span><span class="n">self</span> <span class="n">setNeedsLayout</span><span class="p">];</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="setitemmargins-">
+  <h4>
+    <a href="#setitemmargins-" class="pilcrow">&#182;</a>
+    setItemMargins:
+  </h4>
+</div>
+</div><div class="body"></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">CGSize</span><code class="name">itemMargins</code></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">setItemMargins:</span><span class="p">(</span><span class="n">CGSize</span><span class="p">)</span><span class="nv">itemMargins</span> <span class="p">{</span>
+  <span class="n">_itemMargins</span> <span class="o">=</span> <span class="n">itemMargins</span><span class="p">;</span>
+  <span class="p">[</span><span class="n">self</span> <span class="n">setNeedsLayout</span><span class="p">];</span>
+<span class="p">}</span></pre></div></td></tr><tr><td class="docs"><div class="dox"><div class="summary">
+<div class="pilwrap" id="setoutermargins-">
+  <h4>
+    <a href="#setoutermargins-" class="pilcrow">&#182;</a>
+    setOuterMargins:
+  </h4>
+</div>
+</div><div class="body"></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span class="dox_type">CGSize</span><code class="name">outerMargins</code></div><div class="dox_tag_title">Return</div><div class="dox_tag_detail"><span class="dox_type">void</span></div></div></div></td><td class="code highlight"><div class="highlight"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">setOuterMargins:</span><span class="p">(</span><span class="n">CGSize</span><span class="p">)</span><span class="nv">outerMargins</span> <span class="p">{</span>
+  <span class="n">_outerMargins</span> <span class="o">=</span> <span class="n">outerMargins</span><span class="p">;</span>
+  <span class="p">[</span><span class="n">self</span> <span class="n">setNeedsLayout</span><span class="p">];</span>
+<span class="p">}</span>
+
+
+
+
+
+<span class="k">@end</span>
+</pre></div></td></tr></tbody></table></div></body></html>

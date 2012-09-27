@@ -1,0 +1,321 @@
+<!DOCTYPE html><html><head><title>SEBlingLordMenuItem.m</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="doc-style.css"><script src="doc-filelist.js"></script><script>var relativeDir = '', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"><h1>SEBlingLordMenuItem.m</h1></td><td class="code highlight"></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+</td><td class="code highlight"><div class="highlight"><pre><span class="cp">//</span>
+<span class="cp">//  SEBlingLordMenuItem.m</span>
+<span class="cp">//  SEBlingLord iOS springboard view</span>
+<span class="cp">//</span>
+<span class="cp">//  Created by bryn austin bellomy on 5/19/12.</span>
+<span class="cp">//  Copyright (c) 2012 robot bubble bath LLC. All rights reserved.</span>
+<span class="cp">//</span>
+
+<span class="cp">#import &lt;stdlib.h&gt;</span>
+<span class="cp">#import &lt;QuartzCore/QuartzCore.h&gt;</span>
+<span class="cp">#import &quot;SEBlingLordMenuItem.h&quot;</span>
+<span class="cp">#import &quot;SEBlingLordView.h&quot;</span>
+
+<span class="k">@interface</span> <span class="nc">SEBlingLordMenuItem</span> <span class="p">()</span>
+  <span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">UIButton</span> <span class="o">*</span><span class="n">button</span><span class="p">;</span>
+  <span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">weak</span><span class="p">,</span>   <span class="n">readwrite</span><span class="p">)</span> <span class="n">CALayer</span> <span class="o">*</span><span class="n">glowLayer</span><span class="p">;</span>
+  <span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">UIButton</span> <span class="o">*</span><span class="n">removeButton</span><span class="p">;</span>
+  <span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">weak</span><span class="p">,</span>   <span class="n">readwrite</span><span class="p">)</span> <span class="n">SEBlingLordViewController</span> <span class="o">*</span><span class="n">vcToLoad</span><span class="p">;</span>
+  <span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">copy</span><span class="p">,</span>   <span class="n">readwrite</span><span class="p">)</span> <span class="n">dispatch_block_t</span> <span class="n">tapHandlerBlock</span><span class="p">;</span>
+  <span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">assign</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="kt">BOOL</span> <span class="n">shouldRunCustomBlockOnTap</span><span class="p">;</span>
+  <span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">UIView</span> <span class="o">*</span><span class="n">imageViewShadowWrapper</span><span class="p">;</span>
+  <span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">UILabel</span> <span class="o">*</span><span class="n">textLabelShadowWrapper</span><span class="p">;</span>
+<span class="k">@end</span>
+
+<span class="k">@implementation</span> <span class="nc">SEBlingLordMenuItem</span>
+
+<span class="k">@synthesize</span> <span class="n">isRemovable</span> <span class="o">=</span> <span class="n">_isRemovable</span><span class="p">;</span>
+<span class="k">@synthesize</span> <span class="n">isInEditingMode</span> <span class="o">=</span> <span class="n">_isInEditingMode</span><span class="p">;</span>
+<span class="k">@synthesize</span> <span class="n">delegate</span> <span class="o">=</span> <span class="n">_delegate</span><span class="p">;</span>
+<span class="k">@synthesize</span> <span class="n">imageView</span> <span class="o">=</span> <span class="n">_imageView</span><span class="p">;</span>
+<span class="k">@synthesize</span> <span class="n">imageViewShadowWrapper</span> <span class="o">=</span> <span class="n">_imageViewShadowWrapper</span><span class="p">;</span>
+<span class="k">@synthesize</span> <span class="n">textLabel</span> <span class="o">=</span> <span class="n">_textLabel</span><span class="p">;</span>
+<span class="k">@synthesize</span> <span class="n">textLabelShadowWrapper</span> <span class="o">=</span> <span class="n">_textLabelShadowWrapper</span><span class="p">;</span>
+<span class="k">@synthesize</span> <span class="n">button</span> <span class="o">=</span> <span class="n">_button</span><span class="p">;</span>
+<span class="k">@synthesize</span> <span class="n">removeButton</span> <span class="o">=</span> <span class="n">_removeButton</span><span class="p">;</span>
+<span class="k">@synthesize</span> <span class="n">vcToLoad</span> <span class="o">=</span> <span class="n">_vcToLoad</span><span class="p">;</span>
+<span class="k">@synthesize</span> <span class="n">tapHandlerBlock</span> <span class="o">=</span> <span class="n">_tapHandlerBlock</span><span class="p">;</span>
+<span class="k">@synthesize</span> <span class="n">shouldRunCustomBlockOnTap</span> <span class="o">=</span> <span class="n">_shouldRunCustomBlockOnTap</span><span class="p">;</span>
+<span class="k">@synthesize</span> <span class="n">glowLayer</span> <span class="o">=</span> <span class="n">_glowLayer</span><span class="p">;</span>
+
+
+<span class="cp">#pragma mark- Initialization</span>
+<span class="cp">#pragma mark-</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span> <span class="nf">initWithFrame:</span> <span class="p">(</span><span class="n">CGRect</span><span class="p">)</span><span class="nv">frame</span>
+               <span class="nf">title:</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">title</span>
+               <span class="nf">image:</span> <span class="p">(</span><span class="n">UIImage</span> <span class="o">*</span><span class="p">)</span><span class="nv">image</span>
+           <span class="nf">removable:</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nv">removable</span>
+      <span class="nf">viewController:</span> <span class="p">(</span><span class="n">SEBlingLordViewController</span> <span class="o">*</span><span class="p">)</span><span class="nv">viewController</span> <span class="p">{</span>
+
+  <span class="n">self</span> <span class="o">=</span> <span class="p">[</span><span class="n">super</span> <span class="nl">initWithFrame:</span><span class="n">frame</span><span class="p">];</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">vcToLoad</span> <span class="o">=</span> <span class="n">viewController</span><span class="p">;</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">shouldRunCustomBlockOnTap</span> <span class="o">=</span> <span class="n">NO</span><span class="p">;</span>
+    <span class="p">[</span><span class="n">self</span> <span class="nl">commonInitTitle:</span><span class="n">title</span> <span class="nl">image:</span><span class="n">image</span> <span class="nl">removable:</span><span class="n">removable</span><span class="p">];</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span> <span class="nf">initWithFrame:</span> <span class="p">(</span><span class="n">CGRect</span><span class="p">)</span><span class="nv">frame</span>
+               <span class="nf">title:</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">title</span>
+               <span class="nf">image:</span> <span class="p">(</span><span class="n">UIImage</span> <span class="o">*</span><span class="p">)</span><span class="nv">image</span>
+           <span class="nf">removable:</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nv">removable</span>
+     <span class="nf">tapHandlerBlock:</span> <span class="p">(</span><span class="n">dispatch_block_t</span><span class="p">)</span><span class="nv">tapHandlerBlock</span> <span class="p">{</span>
+
+  <span class="n">self</span> <span class="o">=</span> <span class="p">[</span><span class="n">super</span> <span class="nl">initWithFrame:</span><span class="n">frame</span><span class="p">];</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">tapHandlerBlock</span> <span class="o">=</span> <span class="n">tapHandlerBlock</span><span class="p">;</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">shouldRunCustomBlockOnTap</span> <span class="o">=</span> <span class="n">YES</span><span class="p">;</span>
+    <span class="p">[</span><span class="n">self</span> <span class="nl">commonInitTitle:</span><span class="n">title</span> <span class="nl">image:</span><span class="n">image</span> <span class="nl">removable:</span><span class="n">removable</span><span class="p">];</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">commonInitTitle:</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">title</span>
+                   <span class="nf">image:</span> <span class="p">(</span><span class="n">UIImage</span> <span class="o">*</span><span class="p">)</span><span class="nv">image</span>
+               <span class="nf">removable:</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nv">removable</span> <span class="p">{</span>
+
+  <span class="n">self</span><span class="p">.</span><span class="n">backgroundColor</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIColor</span> <span class="n">clearColor</span><span class="p">];</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">isInEditingMode</span> <span class="o">=</span> <span class="n">NO</span><span class="p">;</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">isRemovable</span> <span class="o">=</span> <span class="n">removable</span><span class="p">;</span>
+
+
+  <span class="c1">// create the UIImageView</span>
+
+  <span class="n">self</span><span class="p">.</span><span class="n">imageView</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIImageView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithImage:</span><span class="n">image</span><span class="p">];</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">imageView</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">CGRectZero</span><span class="p">;</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">imageView</span><span class="p">.</span><span class="n">layer</span><span class="p">.</span><span class="n">shadowColor</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIColor</span> <span class="n">whiteColor</span><span class="p">].</span><span class="n">CGColor</span><span class="p">;</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">imageView</span><span class="p">.</span><span class="n">layer</span><span class="p">.</span><span class="n">shadowOffset</span> <span class="o">=</span> <span class="n">CGSizeMake</span><span class="p">(</span><span class="mf">0.0f</span><span class="p">,</span> <span class="mf">0.0f</span><span class="p">);</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">imageView</span><span class="p">.</span><span class="n">layer</span><span class="p">.</span><span class="n">shadowOpacity</span> <span class="o">=</span> <span class="mf">0.8f</span><span class="p">;</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">imageView</span><span class="p">.</span><span class="n">layer</span><span class="p">.</span><span class="n">shadowRadius</span> <span class="o">=</span> <span class="mf">7.0f</span><span class="p">;</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">imageView</span><span class="p">.</span><span class="n">layer</span><span class="p">.</span><span class="n">cornerRadius</span> <span class="o">=</span> <span class="mf">5.0f</span><span class="p">;</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">imageView</span><span class="p">.</span><span class="n">layer</span><span class="p">.</span><span class="n">masksToBounds</span> <span class="o">=</span> <span class="n">YES</span><span class="p">;</span>
+
+
+  <span class="c1">// create the shadow wrapper for the UIImageView</span>
+
+  <span class="n">self</span><span class="p">.</span><span class="n">imageViewShadowWrapper</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame:</span><span class="n">CGRectZero</span><span class="p">];</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">imageViewShadowWrapper</span><span class="p">.</span><span class="n">layer</span><span class="p">.</span><span class="n">shadowColor</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIColor</span> <span class="n">whiteColor</span><span class="p">].</span><span class="n">CGColor</span><span class="p">;</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">imageViewShadowWrapper</span><span class="p">.</span><span class="n">layer</span><span class="p">.</span><span class="n">shadowOffset</span> <span class="o">=</span> <span class="n">CGSizeMake</span><span class="p">(</span><span class="mf">0.0f</span><span class="p">,</span> <span class="mf">0.0f</span><span class="p">);</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">imageViewShadowWrapper</span><span class="p">.</span><span class="n">layer</span><span class="p">.</span><span class="n">shadowOpacity</span> <span class="o">=</span> <span class="mf">0.8f</span><span class="p">;</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">imageViewShadowWrapper</span><span class="p">.</span><span class="n">layer</span><span class="p">.</span><span class="n">shadowRadius</span> <span class="o">=</span> <span class="mf">7.0f</span><span class="p">;</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">imageViewShadowWrapper</span><span class="p">.</span><span class="n">clipsToBounds</span> <span class="o">=</span> <span class="n">NO</span><span class="p">;</span>
+
+
+  <span class="c1">// add the UIImageView into the shadow wrapper UIView</span>
+
+  <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">imageViewShadowWrapper</span> <span class="nl">addSubview:</span> <span class="n">self</span><span class="p">.</span><span class="n">imageView</span><span class="p">];</span>
+  <span class="p">[</span><span class="n">self</span> <span class="nl">addSubview:</span> <span class="n">self</span><span class="p">.</span><span class="n">imageViewShadowWrapper</span><span class="p">];</span>
+
+  <span class="n">self</span><span class="p">.</span><span class="n">glowLayer</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">imageViewShadowWrapper</span><span class="p">.</span><span class="n">layer</span><span class="p">;</span> <span class="c1">// store a reference to the shadow wrapper&#39;s layer for easy access</span>
+
+
+  <span class="c1">// create the text label&#39;s shadow</span>
+
+  <span class="n">self</span><span class="p">.</span><span class="n">textLabelShadowWrapper</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UILabel</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame:</span><span class="n">CGRectZero</span><span class="p">];</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">textLabelShadowWrapper</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">title</span><span class="p">;</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">textLabelShadowWrapper</span><span class="p">.</span><span class="n">backgroundColor</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIColor</span> <span class="n">clearColor</span><span class="p">];</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">textLabelShadowWrapper</span><span class="p">.</span><span class="n">textColor</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIColor</span> <span class="n">darkTextColor</span><span class="p">];</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">textLabelShadowWrapper</span><span class="p">.</span><span class="n">textAlignment</span> <span class="o">=</span> <span class="n">UITextAlignmentCenter</span><span class="p">;</span> <span class="c1">// NSTextAlignmentCenter (in iOS 6.0)</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">textLabelShadowWrapper</span><span class="p">.</span><span class="n">lineBreakMode</span> <span class="o">=</span> <span class="n">UILineBreakModeWordWrap</span><span class="p">;</span> <span class="c1">// NSLineBreakByWordWrapping (in iOS 6.0)</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">textLabelShadowWrapper</span><span class="p">.</span><span class="n">numberOfLines</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">textLabelShadowWrapper</span><span class="p">.</span><span class="n">font</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIFont</span> <span class="nl">systemFontOfSize:</span><span class="mf">15.0f</span><span class="p">];</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">textLabelShadowWrapper</span><span class="p">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.7f</span><span class="p">;</span>
+
+
+  <span class="c1">// create the text label</span>
+
+  <span class="n">self</span><span class="p">.</span><span class="n">textLabel</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UILabel</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame:</span><span class="n">CGRectZero</span><span class="p">];</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">textLabel</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">title</span><span class="p">;</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">textLabel</span><span class="p">.</span><span class="n">backgroundColor</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIColor</span> <span class="n">clearColor</span><span class="p">];</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">textLabel</span><span class="p">.</span><span class="n">textColor</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIColor</span> <span class="n">lightTextColor</span><span class="p">];</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">textLabel</span><span class="p">.</span><span class="n">textAlignment</span> <span class="o">=</span> <span class="n">UITextAlignmentCenter</span><span class="p">;</span> <span class="c1">// NSTextAlignmentCenter</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">textLabel</span><span class="p">.</span><span class="n">lineBreakMode</span> <span class="o">=</span> <span class="n">UILineBreakModeWordWrap</span><span class="p">;</span> <span class="c1">// NSLineBreakByWordWrapping;</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">textLabel</span><span class="p">.</span><span class="n">numberOfLines</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">textLabel</span><span class="p">.</span><span class="n">font</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIFont</span> <span class="nl">systemFontOfSize:</span><span class="mf">15.0f</span><span class="p">];</span>
+
+
+  <span class="c1">// add the text label and its drop shadow</span>
+
+  <span class="p">[</span><span class="n">self</span> <span class="nl">addSubview:</span> <span class="n">self</span><span class="p">.</span><span class="n">textLabelShadowWrapper</span><span class="p">];</span>
+  <span class="p">[</span><span class="n">self</span> <span class="nl">addSubview:</span> <span class="n">self</span><span class="p">.</span><span class="n">textLabel</span><span class="p">];</span>
+
+
+  <span class="c1">// place a clickable button on top of everything</span>
+
+  <span class="n">self</span><span class="p">.</span><span class="n">button</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIButton</span> <span class="nl">buttonWithType:</span><span class="n">UIButtonTypeCustom</span><span class="p">];</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">button</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">CGRectZero</span><span class="p">;</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">button</span><span class="p">.</span><span class="n">backgroundColor</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIColor</span> <span class="n">clearColor</span><span class="p">];</span>
+  <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">button</span> <span class="nl">addTarget:</span><span class="n">self</span> <span class="nl">action:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">clickItem:</span><span class="p">)</span> <span class="nl">forControlEvents:</span><span class="n">UIControlEventTouchUpInside</span><span class="p">];</span>
+  <span class="p">[</span><span class="n">self</span> <span class="nl">addSubview:</span><span class="n">self</span><span class="p">.</span><span class="n">button</span><span class="p">];</span>
+
+
+  <span class="c1">// add a long-press gesture recognizer for triggering editing mode on the whole springboard</span>
+
+  <span class="n">UILongPressGestureRecognizer</span> <span class="o">*</span><span class="n">longPress</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UILongPressGestureRecognizer</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithTarget:</span><span class="n">self</span> <span class="nl">action:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">pressedLong:</span><span class="p">)];</span>
+  <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">button</span> <span class="nl">addGestureRecognizer:</span><span class="n">longPress</span><span class="p">];</span>
+
+
+  <span class="c1">// create a remove button for removing item from the board (if it&#39;s removable)</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">isRemovable</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">removeButton</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIButton</span> <span class="nl">buttonWithType:</span><span class="n">UIButtonTypeCustom</span><span class="p">];</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">removeButton</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">CGRectZero</span><span class="p">;</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">removeButton</span><span class="p">.</span><span class="n">backgroundColor</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIColor</span> <span class="n">clearColor</span><span class="p">];</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">removeButton</span><span class="p">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="n">YES</span><span class="p">;</span>
+    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">removeButton</span> <span class="nl">setImage:</span><span class="p">[</span><span class="n">UIImage</span> <span class="nl">imageNamed:</span><span class="s">@&quot;btn_delete.png&quot;</span><span class="p">]</span> <span class="nl">forState:</span><span class="n">UIControlStateNormal</span><span class="p">];</span> <span class="c1">// @@TODO: remove +imageNamed:</span>
+    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">removeButton</span> <span class="nl">addTarget:</span><span class="n">self</span> <span class="nl">action:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">removeButtonTapped:</span><span class="p">)</span> <span class="nl">forControlEvents:</span><span class="n">UIControlEventTouchUpInside</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">self</span> <span class="nl">addSubview:</span><span class="n">self</span><span class="p">.</span><span class="n">removeButton</span><span class="p">];</span>
+
+    <span class="n">self</span><span class="p">.</span><span class="n">removeButton</span><span class="p">.</span><span class="n">autoresizingMask</span> <span class="o">=</span> <span class="n">UIViewAutoresizingFlexibleHeight</span> <span class="o">|</span> <span class="n">UIViewAutoresizingFlexibleWidth</span><span class="p">;</span>
+  <span class="p">}</span>
+
+
+  <span class="c1">// set up autoresizing masks</span>
+
+  <span class="n">self</span><span class="p">.</span><span class="n">autoresizingMask</span> <span class="o">=</span> <span class="n">UIViewAutoresizingFlexibleHeight</span> <span class="o">|</span> <span class="n">UIViewAutoresizingFlexibleWidth</span><span class="p">;</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">imageViewShadowWrapper</span><span class="p">.</span><span class="n">autoresizingMask</span> <span class="o">=</span> <span class="n">UIViewAutoresizingFlexibleHeight</span> <span class="o">|</span> <span class="n">UIViewAutoresizingFlexibleWidth</span><span class="p">;</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">imageView</span><span class="p">.</span><span class="n">autoresizingMask</span> <span class="o">=</span> <span class="n">UIViewAutoresizingFlexibleHeight</span> <span class="o">|</span> <span class="n">UIViewAutoresizingFlexibleWidth</span><span class="p">;</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">textLabelShadowWrapper</span><span class="p">.</span><span class="n">autoresizingMask</span> <span class="o">=</span> <span class="n">UIViewAutoresizingFlexibleHeight</span> <span class="o">|</span> <span class="n">UIViewAutoresizingFlexibleWidth</span><span class="p">;</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">textLabel</span><span class="p">.</span><span class="n">autoresizingMask</span> <span class="o">=</span> <span class="n">UIViewAutoresizingFlexibleHeight</span> <span class="o">|</span> <span class="n">UIViewAutoresizingFlexibleWidth</span><span class="p">;</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">button</span><span class="p">.</span><span class="n">autoresizingMask</span> <span class="o">=</span> <span class="n">UIViewAutoresizingFlexibleHeight</span> <span class="o">|</span> <span class="n">UIViewAutoresizingFlexibleWidth</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">layoutSubviews</span> <span class="p">{</span>
+  <span class="n">CGFloat</span> <span class="n">iconDimension</span> <span class="o">=</span> <span class="n">MIN</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
+
+  <span class="n">CGFloat</span> <span class="n">labelHeight</span> <span class="o">=</span>  <span class="n">MAX</span><span class="p">(</span><span class="mf">0.2f</span> <span class="o">*</span> <span class="n">iconDimension</span><span class="p">,</span> <span class="mf">20.0f</span><span class="p">);</span>
+  <span class="n">labelHeight</span> <span class="o">=</span> <span class="n">MAX</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">-</span> <span class="n">iconDimension</span><span class="p">,</span> <span class="n">labelHeight</span><span class="p">);</span>
+
+  <span class="n">iconDimension</span> <span class="o">=</span> <span class="n">MIN</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">-</span> <span class="n">labelHeight</span><span class="p">,</span> <span class="n">iconDimension</span><span class="p">);</span>
+
+  <span class="n">CGPoint</span> <span class="n">labelLocation</span> <span class="o">=</span> <span class="n">CGPointMake</span><span class="p">(</span><span class="mf">0.0f</span><span class="p">,</span> <span class="n">iconDimension</span><span class="p">);</span>
+  <span class="n">CGSize</span> <span class="n">labelSize</span> <span class="o">=</span> <span class="n">CGSizeMake</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">labelHeight</span><span class="p">);</span>
+
+
+  <span class="c1">// set the UIImageView&#39;s shadow wrapper&#39;s frame within self</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">imageViewShadowWrapper</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="mf">0.0f</span><span class="p">,</span> <span class="mf">0.0f</span><span class="p">,</span> <span class="n">iconDimension</span><span class="p">,</span> <span class="n">iconDimension</span><span class="p">);</span>
+
+  <span class="c1">// set the UIImageView&#39;s frame within its shadow wrapper</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">imageView</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="mf">0.0f</span><span class="p">,</span> <span class="mf">0.0f</span><span class="p">,</span> <span class="n">iconDimension</span><span class="p">,</span> <span class="n">iconDimension</span><span class="p">);</span>
+
+
+  <span class="c1">// set the text drop shadow&#39;s frame within self</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">textLabelShadowWrapper</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="n">labelLocation</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="mf">1.0f</span><span class="p">,</span>
+                                                 <span class="n">labelLocation</span><span class="p">.</span><span class="n">y</span> <span class="o">+</span> <span class="mf">1.0f</span><span class="p">,</span>
+                                                 <span class="n">labelSize</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">labelSize</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
+
+  <span class="c1">// set the text&#39;s frame within self</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">textLabel</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="n">labelLocation</span><span class="p">.</span><span class="n">x</span><span class="p">,</span>
+                                    <span class="n">labelLocation</span><span class="p">.</span><span class="n">y</span><span class="p">,</span>
+                                    <span class="n">labelSize</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">labelSize</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
+
+  <span class="c1">// set the button&#39;s frame within self (it should span the entirety of self so the whole thing is clickable)</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">button</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="mf">0.0f</span><span class="p">,</span> <span class="mf">0.0f</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
+
+  <span class="c1">// set the remove button&#39;s frame if this item is removable</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">isRemovable</span><span class="p">)</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">removeButton</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="mf">65.0f</span><span class="p">,</span> <span class="mf">5.0f</span><span class="p">,</span> <span class="mf">20.0f</span><span class="p">,</span> <span class="mf">20.0f</span><span class="p">);</span> <span class="c1">// @@TODO: don&#39;t hard-code this</span>
+<span class="p">}</span>
+
+
+
+<span class="cp">#pragma mark- UI actions</span>
+<span class="cp">#pragma mark-</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">clickItem:</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span> <span class="n">sender</span> <span class="p">{</span>
+
+  <span class="c1">// do quick glow-stronger/fade animation</span>
+
+  <span class="n">CABasicAnimation</span> <span class="o">*</span><span class="n">anim</span> <span class="o">=</span> <span class="p">[</span><span class="n">CABasicAnimation</span> <span class="nl">animationWithKeyPath:</span><span class="s">@&quot;shadowRadius&quot;</span><span class="p">];</span>
+  <span class="n">anim</span><span class="p">.</span><span class="n">duration</span> <span class="o">=</span> <span class="mf">0.07f</span><span class="p">;</span>
+  <span class="n">anim</span><span class="p">.</span><span class="n">fromValue</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSNumber</span> <span class="nl">numberWithFloat:</span><span class="mf">7.0f</span><span class="p">];</span>
+  <span class="n">anim</span><span class="p">.</span><span class="n">toValue</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSNumber</span> <span class="nl">numberWithFloat:</span><span class="mf">17.0f</span><span class="p">];</span>
+  <span class="n">anim</span><span class="p">.</span><span class="n">autoreverses</span> <span class="o">=</span> <span class="n">YES</span><span class="p">;</span>
+
+  <span class="n">CABasicAnimation</span> <span class="o">*</span><span class="n">anim2</span> <span class="o">=</span> <span class="p">[</span><span class="n">CABasicAnimation</span> <span class="nl">animationWithKeyPath:</span><span class="s">@&quot;shadowOpacity&quot;</span><span class="p">];</span>
+  <span class="n">anim2</span><span class="p">.</span><span class="n">duration</span> <span class="o">=</span> <span class="mf">0.07f</span><span class="p">;</span>
+  <span class="n">anim2</span><span class="p">.</span><span class="n">fromValue</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSNumber</span> <span class="nl">numberWithFloat:</span><span class="mf">0.8f</span><span class="p">];</span>
+  <span class="n">anim2</span><span class="p">.</span><span class="n">toValue</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSNumber</span> <span class="nl">numberWithFloat:</span><span class="mf">1.0f</span><span class="p">];</span>
+  <span class="n">anim2</span><span class="p">.</span><span class="n">autoreverses</span> <span class="o">=</span> <span class="n">YES</span><span class="p">;</span>
+
+  <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">glowLayer</span> <span class="nl">addAnimation:</span><span class="n">anim</span> <span class="nl">forKey:</span><span class="s">@&quot;shadowRadius&quot;</span><span class="p">];</span>
+  <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">glowLayer</span> <span class="nl">addAnimation:</span><span class="n">anim2</span> <span class="nl">forKey:</span><span class="s">@&quot;shadowOpacity&quot;</span><span class="p">];</span>
+
+
+  <span class="c1">// Either run the tapHandlerBlock...</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">shouldRunCustomBlockOnTap</span> <span class="o">==</span> <span class="n">YES</span> <span class="o">&amp;&amp;</span> <span class="n">self</span><span class="p">.</span><span class="n">tapHandlerBlock</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span>
+    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">delegate</span> <span class="nl">menuItemWasTapped:</span> <span class="n">self</span>
+                            <span class="nl">runBlock:</span> <span class="n">self</span><span class="p">.</span><span class="n">tapHandlerBlock</span><span class="p">];</span>
+
+
+  <span class="c1">// ... or launch the provided view controller</span>
+
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">vcToLoad</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span>
+    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">delegate</span> <span class="nl">menuItemWasTapped:</span> <span class="n">self</span>
+                <span class="nl">launchViewController:</span> <span class="n">self</span><span class="p">.</span><span class="n">vcToLoad</span><span class="p">];</span>
+<span class="p">}</span>
+
+
+
+<span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nl">pressedLong:</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="n">sender</span> <span class="p">{</span>
+  <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">delegate</span> <span class="nl">menuItemWasLongPressed:</span><span class="n">self</span><span class="p">];</span>
+<span class="p">}</span>
+
+
+
+<span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nl">removeButtonTapped:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span> <span class="n">sender</span>  <span class="p">{</span>
+  <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">delegate</span> <span class="nl">removeButtonWasTapped:</span><span class="n">self</span><span class="p">];</span>
+<span class="p">}</span>
+
+
+
+<span class="cp">#pragma mark- Editing mode on/off</span>
+<span class="cp">#pragma mark-</span>
+
+<span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nl">setIsInEditingMode:</span><span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="n">isInEditingMode</span> <span class="p">{</span>
+
+  <span class="n">_isInEditingMode</span> <span class="o">=</span> <span class="n">isInEditingMode</span><span class="p">;</span>
+
+  <span class="c1">// set the remove button&#39;s visibility</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">removeButton</span><span class="p">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="o">!</span><span class="n">isInEditingMode</span><span class="p">;</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">isInEditingMode</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// start the wiggling animation</span>
+    <span class="n">CATransform3D</span> <span class="n">transform</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">arc4random</span><span class="p">()</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+      <span class="n">transform</span> <span class="o">=</span> <span class="n">CATransform3DMakeRotation</span><span class="p">(</span><span class="o">-</span><span class="mf">0.08</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">);</span>
+    <span class="k">else</span>
+      <span class="n">transform</span> <span class="o">=</span> <span class="n">CATransform3DMakeRotation</span><span class="p">(</span><span class="mf">0.08</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">);</span>
+
+    <span class="n">CABasicAnimation</span> <span class="o">*</span><span class="n">animation</span> <span class="o">=</span> <span class="p">[</span><span class="n">CABasicAnimation</span> <span class="nl">animationWithKeyPath:</span><span class="s">@&quot;transform&quot;</span><span class="p">];</span>
+    <span class="n">animation</span><span class="p">.</span><span class="n">toValue</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSValue</span> <span class="nl">valueWithCATransform3D:</span><span class="n">transform</span><span class="p">];</span>
+    <span class="n">animation</span><span class="p">.</span><span class="n">autoreverses</span> <span class="o">=</span> <span class="n">YES</span><span class="p">;</span>
+    <span class="n">animation</span><span class="p">.</span><span class="n">duration</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">;</span>
+    <span class="n">animation</span><span class="p">.</span><span class="n">repeatCount</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">;</span>
+    <span class="n">animation</span><span class="p">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="n">self</span><span class="p">;</span>
+    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">layer</span> <span class="nl">addAnimation:</span><span class="n">animation</span> <span class="nl">forKey:</span><span class="s">@&quot;wiggleAnimation&quot;</span><span class="p">];</span>
+  <span class="p">}</span>
+  <span class="k">else</span> <span class="p">{</span>
+    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">layer</span> <span class="n">removeAllAnimations</span><span class="p">];</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+
+
+
+
+<span class="k">@end</span>
+</pre></div></td></tr></tbody></table></div></body></html>

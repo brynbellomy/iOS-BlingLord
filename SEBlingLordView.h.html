@@ -1,0 +1,57 @@
+<!DOCTYPE html><html><head><title>SEBlingLordView.h</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" media="all" href="doc-style.css"><script src="doc-filelist.js"></script><script>var relativeDir = '', thisFile = '/Users/bryn/.otis/templates/tmpl.jade', defaultSidebar = true;</script><script src="doc-script.js"></script></head><body><div id="sidebar_wrapper"><div id="sidebar_switch"><span class="tree">Files</span><span class="headings">Headings</span></div><div id="tree"></div><div id="headings"></div></div><div id="sidebar-toggle"></div><div id="container"><div class="background highlight"></div><table cellpadding="0" cellspacing="0"><tbody><tr><td class="docs"><h1>SEBlingLordView.h</h1></td><td class="code highlight"></td></tr><tr><td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+</td><td class="code highlight"><div class="highlight"><pre><span class="cp">//</span>
+<span class="cp">//  SEBlingLordView.h</span>
+<span class="cp">//  SEBlingLord iOS springboard view</span>
+<span class="cp">//</span>
+<span class="cp">//  Created by bryn austin bellomy on 5/19/12.</span>
+<span class="cp">//  Copyright (c) 2012 robot bubble bath LLC. All rights reserved.</span>
+<span class="cp">//</span>
+
+<span class="cp">#import &lt;UIKit/UIKit.h&gt;</span>
+<span class="cp">#import &quot;SEBlingLordMenuItem.h&quot;</span>
+<span class="c1">//#import &quot;KJGridLayoutView.h&quot;</span>
+
+<span class="k">typedef</span> <span class="k">enum</span> <span class="p">{</span>
+  <span class="n">SEBlingLordLayoutStyleNone</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="n">SEBlingLordLayoutStyleCenterVertically</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">0</span><span class="p">),</span>
+  <span class="n">SEBlingLordLayoutStyleCenterHorizontally</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">)</span>
+<span class="p">}</span> <span class="n">SEBlingLordLayoutStyle</span><span class="p">;</span>
+
+<span class="k">static</span> <span class="n">NSString</span> <span class="o">*</span><span class="k">const</span> <span class="n">SEBlingLordNotificationCloseView</span> <span class="o">=</span> <span class="s">@&quot;SEBlingLordNotificationCloseView&quot;</span><span class="p">;</span>
+
+<span class="c1">//static inline KJGridPair SEGetGridPosition(NSUInteger newItemIdx, NSUInteger numCols) {</span>
+<span class="c1">//  NSUInteger col = newItemIdx % numCols;</span>
+<span class="c1">//  return KJGridPairMake((newItemIdx - col) / numCols, col);</span>
+<span class="c1">//}</span>
+
+
+<span class="k">@interface</span> <span class="nc">SEBlingLordView</span> : <span class="nc">UIView</span> <span class="cm">/*KJGridLayoutView*/</span> <span class="o">&lt;</span><span class="n">SEBlingLordMenuItemDelegate</span><span class="p">,</span> <span class="n">UIScrollViewDelegate</span><span class="o">&gt;</span>
+
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">assign</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="kt">BOOL</span> <span class="n">allowsEditing</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">assign</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="kt">BOOL</span> <span class="n">isInEditingMode</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">assign</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">SEBlingLordLayoutStyle</span> <span class="n">layoutStyle</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">UIImage</span> <span class="o">*</span><span class="n">launcherImage</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">NSArray</span> <span class="o">*</span><span class="n">items</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="kt">IBOutlet</span> <span class="n">UINavigationController</span> <span class="o">*</span><span class="n">navigationController</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="kt">IBOutlet</span> <span class="n">UIScrollView</span> <span class="o">*</span><span class="n">itemsContainer</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="kt">IBOutlet</span> <span class="n">UIPageControl</span> <span class="o">*</span><span class="n">pageControl</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="kt">IBOutlet</span> <span class="n">UIButton</span> <span class="o">*</span><span class="n">doneEditingButton</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">assign</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">CGSize</span> <span class="n">itemSize</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">assign</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">CGSize</span> <span class="n">itemMargins</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">assign</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">)</span> <span class="n">CGSize</span> <span class="n">outerMargins</span><span class="p">;</span>
+<span class="c1">//@property (nonatomic, assign, readwrite) KJGridPair gridSize;</span>
+
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span> <span class="nf">initWithFrame:</span> <span class="p">(</span><span class="n">CGRect</span><span class="p">)</span><span class="nv">frame</span><span class="p">;</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span> <span class="nf">initWithFrame:</span> <span class="p">(</span><span class="n">CGRect</span><span class="p">)</span><span class="nv">frame</span> <span class="nf">itemSize:</span><span class="p">(</span><span class="n">CGSize</span><span class="p">)</span><span class="nv">itemSize</span> <span class="nf">itemMargins:</span><span class="p">(</span><span class="n">CGSize</span><span class="p">)</span><span class="nv">itemMargins</span> <span class="nf">outerMargins:</span><span class="p">(</span><span class="n">CGSize</span><span class="p">)</span><span class="nv">outerMargins</span> <span class="cm">/*gridSize: (KJGridSize)gridSize*/</span> <span class="nf">items:</span><span class="p">(</span><span class="n">NSMutableArray</span> <span class="o">*</span><span class="p">)</span><span class="nv">items</span><span class="p">;</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">addMenuItem:</span><span class="p">(</span><span class="n">SEBlingLordMenuItem</span> <span class="o">*</span><span class="p">)</span><span class="nv">menuItem</span><span class="p">;</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">addMenuItems:</span><span class="p">(</span><span class="n">NSArray</span> <span class="o">*</span><span class="p">)</span><span class="nv">menuItems</span><span class="p">;</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">removeMenuItemAtIndex:</span><span class="p">(</span><span class="n">NSUInteger</span><span class="p">)</span><span class="nv">idx</span> <span class="nf">animate:</span><span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nv">animate</span><span class="p">;</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="nf">removeAllMenuItems</span><span class="p">;</span>
+  
+<span class="k">@end</span>
+</pre></div></td></tr></tbody></table></div></body></html>
