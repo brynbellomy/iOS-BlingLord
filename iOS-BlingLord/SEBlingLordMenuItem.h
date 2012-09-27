@@ -21,7 +21,7 @@
 
 - (id) initWithFrame:(CGRect)frame title:(NSString *)title image:(UIImage *)image removable:(BOOL)removable viewController:(SEBlingLordViewController *)viewController;
 - (id) initWithFrame:(CGRect)frame title:(NSString *)title image:(UIImage *)image removable:(BOOL)removable tapHandlerBlock:(dispatch_block_t)tapHandlerBlock;
-  
+
 @end
 
 
